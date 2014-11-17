@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@android:color/black"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include layout="@layout/toolbar"
+        android:id="@+id/main_toolbar" />
+    
+    <ListView 
+        android:id="@+id/list_projects"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_toolbar"
+        android:choiceMode="singleChoice"
+        android:divider="@color/colorPrimaryDark"
+        android:dividerHeight="1dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/list_projects"
+        android:background="@color/colorPrimaryDark"/>
+    
+</RelativeLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- General -->
+    <string name="app_name">Arendelle</string>
+    <string name="app_version">1.0</string>
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
+
+    <!-- Main activity -->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_new">New</string>
+    <string name="toast_storage_not_accessible">Storage not accessible</string>
+    <string name="dialog_new_project_title">New project</string>
+    <string name="dialog_new_project_name">Name</string>
+    <string name="dialog_new_project_main_function_name">Name of main function</string>
+
+    <!-- Editor activity -->
+    <string name="action_run">Run</string>
+    <string name="key_loop_open">[</string>
+    <string name="key_grammar_divider">,</string>
+    <string name="key_loop_close">]</string>
+    <string name="key_space_open">(</string>
+    <string name="key_space_close">)</string>
+    <string name="key_condition_open">{</string>
+    <string name="key_condition_close">}</string>
+    <string name="key_space_sign">\@</string>
+    <string name="key_source_sign">#</string>
+    <string name="key_tab">tab</string>
+    <string name="key_divide_sign">/</string>
+    <string name="key_equal_sign">=</string>
+    <string name="key_minus_sign">-</string>
+    <string name="key_plus_sign">+</string>
+    <string name="key_multiply_sign">*</string>
+    <string name="key_function_sign">!</string>
+    <string name="key_stored_space_sign">$</string>
+    <string name="key_key_sign">&amp;</string>
+    <string name="key_pow_sign">^</string>
+    <string name="key_modulo_sign">%</string>
+    <string name="key_function_header_open">&lt;</string>
+    <string name="key_function_header_close">&gt;</string>
+    <string name="key_title_sign">\'</string>
+    <string name="key_string_sign">\"</string>
+
+    <!-- Screen activity -->
+    <string name="action_stop">Stop</string>
+    <string name="action_rerun">Rerun</string>
+
+</resources>

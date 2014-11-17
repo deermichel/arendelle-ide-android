@@ -1,0 +1,235 @@
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/drawer_layout"
+    tools:context="org.arendelle.android.Editor">
+
+    <RelativeLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <include layout="@layout/toolbar"
+            android:id="@+id/editor_toolbar" />
+
+        <EditText
+            android:id="@+id/text_code"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/editor_toolbar"
+            android:layout_above="@+id/scrollview_keys"
+            android:layout_margin="5dp"
+            android:background="@android:color/transparent"
+            android:gravity="top|start"
+            android:inputType="textMultiLine|textNoSuggestions"
+            android:textSize="15sp"
+            android:scrollbars="vertical|horizontal" />
+
+        <HorizontalScrollView
+            android:id="@+id/scrollview_keys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/key_loop_open"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_loop_open" />
+
+                <Button
+                    android:id="@+id/key_grammar_divider"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_grammar_divider" />
+
+                <Button
+                    android:id="@+id/key_loop_close"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_loop_close" />
+
+                <Button
+                    android:id="@+id/key_space_open"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_space_open" />
+
+                <Button
+                    android:id="@+id/key_space_close"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_space_close" />
+
+                <Button
+                    android:id="@+id/key_condition_open"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_condition_open" />
+
+                <Button
+                    android:id="@+id/key_condition_close"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_condition_close" />
+
+                <Button
+                    android:id="@+id/key_space_sign"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_space_sign" />
+
+                <Button
+                    android:id="@+id/key_source_sign"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_source_sign" />
+
+                <Button
+                    android:id="@+id/key_tab"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_tab" />
+
+                <Button
+                    android:id="@+id/key_divide_sign"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_divide_sign" />
+
+                <Button
+                    android:id="@+id/key_equal_sign"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_equal_sign" />
+
+                <Button
+                    android:id="@+id/key_minus_sign"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_minus_sign" />
+
+                <Button
+                    android:id="@+id/key_plus_sign"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_plus_sign" />
+
+                <Button
+                    android:id="@+id/key_multiply_sign"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_multiply_sign" />
+
+                <Button
+                    android:id="@+id/key_function_sign"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_function_sign" />
+
+                <Button
+                    android:id="@+id/key_stored_space_sign"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_stored_space_sign" />
+
+                <Button
+                    android:id="@+id/key_key_sign"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_key_sign" />
+
+                <Button
+                    android:id="@+id/key_pow_sign"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_pow_sign" />
+
+                <Button
+                    android:id="@+id/key_modulo_sign"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_modulo_sign" />
+
+                <Button
+                    android:id="@+id/key_function_header_open"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_function_header_open" />
+
+                <Button
+                    android:id="@+id/key_function_header_close"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_function_header_close" />
+
+                <Button
+                    android:id="@+id/key_title_sign"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_title_sign" />
+
+                <Button
+                    android:id="@+id/key_string_sign"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_string_sign" />
+                
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <org.arendelle.android.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/scrollview_keys"
+            android:id="@+id/fabutton_run"
+            android:src="@drawable/ic_run"
+            app:fab_colorNormal="@color/colorAccent"
+            app:fab_colorPressed="@color/colorPrimary"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+    
+    <ListView 
+        android:id="@+id/left_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="1dp"
+        android:background="@color/background_material_dark" />
+    
+</android.support.v4.widget.DrawerLayout>
