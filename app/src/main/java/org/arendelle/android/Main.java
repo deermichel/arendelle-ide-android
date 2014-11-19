@@ -1,19 +1,13 @@
 package org.arendelle.android;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.MutableContextWrapper;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,21 +15,15 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,7 +61,7 @@ public class Main extends ActionBarActivity implements OnItemClickListener {
 		
 		switch (item.getItemId()) {
 		case R.id.action_new:
-			showNewProjectDialogs();
+			showNewProjectDialog();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -82,8 +70,7 @@ public class Main extends ActionBarActivity implements OnItemClickListener {
 	}
 	
 	/** shows dialog for new Arendelle project */
-	private void showNewProjectDialogs() {
-        //newProject(inputNewProjectName.getText().toString(), inputMainClassName.getText().toString());
+	private void showNewProjectDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -100,7 +87,10 @@ public class Main extends ActionBarActivity implements OnItemClickListener {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {}
 		});
-        builder.show();
+
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.show();
 
 	}
 	

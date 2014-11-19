@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /** text file operations */
@@ -70,6 +71,25 @@ public class Files {
         output.flush();
         output.close();
 
+    }
+
+    /** gets all files of a folder and its subfolders */
+    public static void getFiles(File folder, ArrayList<File> files) {
+
+        File[] filesList = folder.listFiles();
+        for (File file : filesList) {
+            if (file.isFile()) {
+                files.add(file);
+            } else if (file.isDirectory()) {
+                getFiles(file, files);
+            }
+        }
+
+    }
+
+    /** gets relative path */
+    public static String getRelativePath(File root, File path) {
+        return path.getAbsolutePath().substring(root.getAbsolutePath().length() + 1);
     }
 	
 }

@@ -19,6 +19,9 @@
 
 package org.arendelle.java.engine;
 
+import org.arendelle.android.Files;
+
+import java.io.File;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -72,8 +75,8 @@ public class FunctionParser {
 		// get function code and prepare it
 		String functionCode = "";
 		try {
-			//TODO:functionCode = new String(Files.readAllBytes(Paths.get(functionPath)), StandardCharsets.UTF_8);
-		} catch (Exception e) {
+            functionCode = Files.read(new File(functionPath));
+        } catch (Exception e) {
 			Reporter.report("Undefined function: '" + functionName + "'", arendelle.line);
 			return "0";
 		}

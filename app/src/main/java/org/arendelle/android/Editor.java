@@ -8,7 +8,9 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
@@ -16,17 +18,20 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -264,6 +269,13 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+        // save code
+        try {
+            Files.write(currentFunction, textCode.getText().toString());
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();;
+        }
+
         // change colors in list
         if (leftDrawerLastSelection != null) {
             ((TextView) leftDrawerLastSelection).setTypeface(null, Typeface.NORMAL);
@@ -274,8 +286,9 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
         ((TextView) view).setTextColor(getResources().getColor(android.R.color.white));
 
 		// load selected file (/function)
-		currentFunction = new File(projectFolder, ((TextView) view).getText().toString() + ".arendelle");
-		setTitle(currentFunction.getName());
+        String path = ((TextView) view).getText().toString().replace('.', '/') + ".arendelle";
+		currentFunction = new File(projectFolder, path);
+		setTitle(currentFunction.getName().split(".arendelle")[0]);
 		
 		// read code
 		try {
@@ -326,9 +339,7 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 
         // add function
         else if(v == leftDrawerButtonAdd) {
-
-            Toast.makeText(this, "Add", Toast.LENGTH_SHORT).show();
-
+            showNewFunctionDialog();
         }
 
         // open project settings
@@ -342,7 +353,7 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
         else {
 
             // get text of pressed key
-            String keyText = "";
+            String keyText;
             if (v == keyTab) {
                 keyText = "   ";
             } else {
@@ -383,23 +394,105 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
-		// get files in project
-		ArrayList<String> filesList = new ArrayList<String>();
-		File file[] = projectFolder.listFiles();
-		for (File f : file) {
-			if (f.getName().endsWith(".arendelle")) {
-				filesList.add(f.getName().split(".arendelle")[0]);
-			}
-		}
-		Collections.sort(filesList);
+
+        // get files in project folder
+        ArrayList<File> filesList = new ArrayList<File>();
+        Files.getFiles(projectFolder, filesList);
+
+        // get arendelle files
+        ArrayList<String> functionsList = new ArrayList<String>();
+        for (File f : filesList) {
+            if (f.getAbsolutePath().contains(".arendelle")) {
+                String name = Files.getRelativePath(projectFolder, f).replace('/', '.').split(".arendelle")[0];
+                functionsList.add(name);
+            }
+        }
+		Collections.sort(functionsList);
 		
 		// display files in the left drawer
-		leftDrawerListView.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_listview_item, filesList));
+		leftDrawerListView.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_listview_item, functionsList));
 
         // store index (+1 because of the header) of current function for later
-        leftDrawerInitialSelection = filesList.indexOf(currentFunction.getName().split(".arendelle")[0]) + 1;
+        leftDrawerInitialSelection = functionsList.indexOf(Files.getRelativePath(projectFolder, currentFunction).replace('/', '.').split(".arendelle")[0]) + 1;
+
+        // reset last selection
+        leftDrawerLastSelection = null;
+
+        // close drawer
+        drawerLayout.closeDrawer(leftDrawerListView);
 
 	}
+
+    /** shows dialog for new function */
+    private void showNewFunctionDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_new_function, null);
+        builder.setView(dialogView);
+        builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                newFunction(((EditText) dialogView.findViewById(R.id.dialog_new_function_text_name)).getText().toString());
+            }
+        });
+        builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {}
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.show();
+
+    }
+
+    /** creates new function */
+    private void newFunction(String functionName) {
+
+        File function;
+
+        if (functionName.split("\\.").length > 1) {
+
+            // create folders for namespaces
+            String foldersPath = functionName.substring(0, functionName.lastIndexOf("."));
+            foldersPath = foldersPath.replace('.', '/');
+            File folders = new File(projectFolder, foldersPath);
+            folders.mkdirs();
+
+            // create function file
+            function = new File(folders, functionName.substring(functionName.lastIndexOf(".") + 1) + ".arendelle");
+
+        } else {
+
+            // create function file
+            function = new File(projectFolder, functionName + ".arendelle");
+
+        }
+
+        // save previous code and create file
+        try {
+            Files.write(currentFunction, textCode.getText().toString());
+            Files.write(function, "");
+        } catch (IOException e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        // set new function as current
+        currentFunction = function;
+        setTitle(currentFunction.getName());
+
+        // read code
+        try {
+            textCode.setText(Files.read(currentFunction));
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+            finish();
+        }
+
+        // refresh files list
+        onResume();
+
+    }
 
 }

@@ -2,7 +2,10 @@ package org.arendelle.android;
 
 import org.arendelle.java.engine.CodeScreen;
 import org.arendelle.java.engine.MasterEvaluator;
+import org.arendelle.java.engine.Reporter;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -15,9 +18,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +47,9 @@ public class Screen extends ActionBarActivity {
 	
 	/** height of cells */
 	public static int cellHeight;
+
+    /** set if errors should be shown to prevent dialog loop */
+    private boolean showErrorsDialog = true;
 	
 	/** compiler thread */
 	private Thread compilerThread = new CompilerThread();
@@ -58,6 +67,24 @@ public class Screen extends ActionBarActivity {
 				public void run() {
 					textChronometer.setText(String.format("%f ms", elapsedTime / 1000000f));
 					// TODO: textError.setText(Reporter.errors);
+
+                    if (Reporter.errors.length() > 0) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Screen.this);
+                        LayoutInflater inflater = getLayoutInflater();
+                        final View dialogView = inflater.inflate(R.layout.dialog_errors, null);
+                        ((TextView) dialogView.findViewById(R.id.dialog_errors_text_errors)).setText(Reporter.errors);
+                        builder.setView(dialogView);
+                        builder.setNeutralButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                        if(showErrorsDialog) builder.show();
+                        showErrorsDialog = false;
+
+                    }
+
 				}
 				
 			});
@@ -107,15 +134,23 @@ public class Screen extends ActionBarActivity {
 		if (compilerThread.isAlive()) compilerThread.interrupt();
 		
 	}
-	
-	/** evaluates the code */
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        showErrorsDialog = true;
+
+    }
+
+    /** evaluates the code */
 	private void evaluate() {
 		
 		// stop compiler thread
 		if (compilerThread.isAlive()) compilerThread.interrupt();
 
 		// reset screen and thread
-		screen = new CodeScreen(gridWidth, gridHeight, "", false);
+		screen = new CodeScreen(gridWidth, gridHeight, projectFolder.getAbsolutePath(), false);
 		textChronometer.setText("");
 		compilerThread = new CompilerThread();
 		
@@ -202,7 +237,7 @@ public class Screen extends ActionBarActivity {
 			
 		// reevaluate
 		case R.id.action_rerun:
-            // TODO: smaller icon
+            showErrorsDialog = true;
 			evaluate();
 			return true;
 			
@@ -216,6 +251,10 @@ public class Screen extends ActionBarActivity {
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
+
+        // only continue if it is necessary to reevaluate
+        if(!hasFocus) return;
+        if(!showErrorsDialog) return;
 
 		// set cell and grid size
 		cellWidth = 20 * (int)getResources().getDisplayMetrics().density;

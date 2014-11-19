@@ -18,6 +18,9 @@
 
     <!-- Editor activity -->
     <string name="action_run">Run</string>
+    <string name="dialog_new_function_title">New function</string>
+    <string name="dialog_new_function_name">Name</string>
+
     <string name="key_loop_open">[</string>
     <string name="key_grammar_divider">,</string>
     <string name="key_loop_close">]</string>
@@ -46,5 +49,6 @@
     <!-- Screen activity -->
     <string name="action_stop">Stop</string>
     <string name="action_rerun">Rerun</string>
+    <string name="dialog_errors_title">Errors</string>
 
 </resources>

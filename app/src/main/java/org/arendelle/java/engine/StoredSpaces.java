@@ -19,6 +19,8 @@
 
 package org.arendelle.java.engine;
 
+import org.arendelle.android.Files;
+
 import java.io.File;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -42,7 +44,7 @@ public class StoredSpaces {
 				
 				// get name
 				String name = "";
-				while(!(expression.substring(i, i + 1).matches("[^A-Za-z0-9]"))) {
+				while(!(expression.substring(i, i + 1).matches("[^A-Za-z0-9.]"))) {
 					name += expression.charAt(i);
 					i++;
 					if (i >= expression.length()) break;
@@ -52,8 +54,9 @@ public class StoredSpaces {
 				
 				// get path and read stored space
 				String storedSpacePath = screen.mainPath + "/" + name.replace('.', '/') + ".space";
+                System.out.println(name);
 				try {
-					//TODO:expressionWithoutStoredSpaces += new String(Files.readAllBytes(Paths.get(storedSpacePath)), StandardCharsets.UTF_8);
+                    expressionWithoutStoredSpaces += Files.read(new File(storedSpacePath));
 				} catch (Exception e) {
 					Reporter.report("No stored space as '$" + name + "' found.", -1);
 					expressionWithoutStoredSpaces += "0";
@@ -145,7 +148,7 @@ public class StoredSpaces {
 			case '/':
 				// edit stored space
 				try {
-					//TODO:storedSpaceValue = String.valueOf(new Expression(Replacer.replace(new String(Files.readAllBytes(Paths.get(storedSpacePath)), StandardCharsets.UTF_8) + expression.charAt(0) + expression.substring(1), screen, spaces)).eval().intValue());
+					storedSpaceValue = String.valueOf(new Expression(Replacer.replace(Files.read(new File(storedSpacePath)) + expression.charAt(0) + expression.substring(1), screen, spaces)).eval().intValue());
 				} catch (Exception e) {
 					Reporter.report(e.toString(), arendelle.line);
 				}
@@ -162,10 +165,7 @@ public class StoredSpaces {
 		
 		// save stored space
 		try {
-			PrintWriter writer;
-			writer = new PrintWriter(storedSpacePath);
-			writer.print(storedSpaceValue);
-			writer.close();
+            Files.write(new File(storedSpacePath), storedSpaceValue);
 		} catch (Exception e) {
 			Reporter.report(e.toString(), arendelle.line);
 		}
