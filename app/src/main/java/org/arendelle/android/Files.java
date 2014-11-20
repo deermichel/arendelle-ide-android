@@ -67,7 +67,7 @@ public class Files {
     public static void saveImage(File file, Bitmap image) throws IOException {
 
         FileOutputStream output = new FileOutputStream(file);
-        image.compress(Bitmap.CompressFormat.PNG, 95, output);
+        image.compress(Bitmap.CompressFormat.PNG, 0, output);
         output.flush();
         output.close();
 

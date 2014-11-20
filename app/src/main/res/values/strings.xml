@@ -49,6 +49,8 @@
     <!-- Screen activity -->
     <string name="action_stop">Stop</string>
     <string name="action_rerun">Rerun</string>
+    <string name="action_share">Share</string>
+    <string name="share_chooser_title">Share via</string>
     <string name="dialog_errors_title">Errors</string>
 
 </resources>

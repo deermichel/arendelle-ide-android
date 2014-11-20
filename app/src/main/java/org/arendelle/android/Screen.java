@@ -6,6 +6,7 @@ import org.arendelle.java.engine.Reporter;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,21 +15,28 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.media.audiofx.EnvironmentalReverb;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Screen extends ActionBarActivity {
 	
@@ -240,6 +248,10 @@ public class Screen extends ActionBarActivity {
             showErrorsDialog = true;
 			evaluate();
 			return true;
+
+        case R.id.action_share:
+            share();
+            return true;
 			
 		default:
 			return super.onOptionsItemSelected(item);
@@ -266,5 +278,58 @@ public class Screen extends ActionBarActivity {
 		evaluate();
 		
 	}
-	
+
+    /** shares the current screen */
+    private void share() {
+
+        // generate the screen
+        Bitmap bitmap = Bitmap.createBitmap(viewResult.getWidth(), viewResult.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+
+        for (int x = 0; x < screen.width; x++) for (int y = 0; y < screen.height; y++) {
+
+            switch (screen.screen[x][y]) {
+
+                case 0:
+                    paint.setColor(Color.BLACK);
+                    break;
+
+                case 1:
+                    paint.setColor(Color.WHITE);
+                    break;
+
+                case 2:
+                    paint.setColor(Color.LTGRAY);
+                    break;
+
+                case 3:
+                    paint.setColor(Color.GRAY);
+                    break;
+
+                case 4:
+                    paint.setColor(Color.DKGRAY);
+                    break;
+
+            }
+
+            canvas.drawRect(x * Screen.cellWidth, y * Screen.cellHeight, x * Screen.cellWidth + Screen.cellWidth, y * Screen.cellHeight + Screen.cellHeight, paint);
+
+        }
+
+        // save image
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "arendelle_" + sdf.format(new Date()), null);
+
+        // create share intent
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.setType("image/jpeg");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
+
+        // start share intent
+        startActivity(Intent.createChooser(shareIntent, getText(R.string.share_chooser_title)));
+
+    }
+
 }

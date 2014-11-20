@@ -215,8 +215,11 @@
             android:layout_above="@+id/scrollview_keys"
             android:id="@+id/fabutton_run"
             android:src="@drawable/ic_run"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
             app:fab_colorNormal="@color/colorAccent"
             app:fab_colorPressed="@color/colorPrimary"
+            app:fab_colorRipple="@color/colorPrimaryDark"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
