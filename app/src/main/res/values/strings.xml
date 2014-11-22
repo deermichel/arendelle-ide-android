@@ -20,6 +20,12 @@
     <string name="action_run">Run</string>
     <string name="dialog_new_function_title">New function</string>
     <string name="dialog_new_function_name">Name</string>
+    <string name="dialog_rename_function_title">Rename function</string>
+    <string name="dialog_rename_function_name">New name</string>
+    <string-array name="dialog_file_options">
+        <item>Rename</item>
+        <item>Delete</item>
+    </string-array>
 
     <string name="key_loop_open">[</string>
     <string name="key_grammar_divider">,</string>

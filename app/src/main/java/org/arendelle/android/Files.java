@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/** text file operations */
+/** file operations */
 public class Files {
 
 	/** reads text from a given file */

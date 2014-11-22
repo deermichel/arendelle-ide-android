@@ -46,7 +46,7 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
-public class Editor extends ActionBarActivity implements OnItemClickListener, OnClickListener {
+public class Editor extends ActionBarActivity implements OnItemClickListener, OnClickListener, AdapterView.OnItemLongClickListener {
 
     // left drawer
     private DrawerLayout drawerLayout;
@@ -152,6 +152,10 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
                     ((TextView) leftDrawerLastSelection).setTextColor(getResources().getColor(android.R.color.white));
                 }
 
+                // close keyboard
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(textCode.getWindowToken(), 0);
+
             }
         };
 		drawerLayout.setDrawerListener(actionBarLeftDrawerToggle);
@@ -162,6 +166,7 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 		
 		// setup drawer list
 		leftDrawerListView.setOnItemClickListener(this);
+        leftDrawerListView.setOnItemLongClickListener(this);
 
         // setup floating action button
         fabuttonRun.setOnClickListener(this);
@@ -213,7 +218,7 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 			Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
 			finish();
 		}
-		setTitle(currentFunction.getName());
+        setTitle(currentFunction.getName().split(".arendelle")[0]);
 		
 		// read code
 		try {
@@ -303,7 +308,50 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 
 	}
 
-	@Override
+    @Override
+    public boolean onItemLongClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+
+        // create file options dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setItems(R.array.dialog_file_options, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                switch(which) {
+
+                    // rename function
+                    case 0:
+                        onItemClick(parent, view, position, id);
+                        showRenameFunctionDialog();
+                        break;
+
+                    // delete function
+                    case 1:
+                        onItemClick(parent, view, position, id);
+                        currentFunction.delete();
+                        currentFunction = mainFunction;
+                        setTitle(currentFunction.getName().split(".arendelle")[0]);
+                        try {
+                            textCode.setText(Files.read(currentFunction));
+                        } catch (Exception e) {
+                            Toast.makeText(Editor.this, e.toString(), Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                        onResume();
+                        break;
+
+                }
+
+            }
+
+        });
+        builder.show();
+
+        return false;
+    }
+
+    @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		//getMenuInflater().inflate(R.menu.menu_editor, menu);
 		return super.onCreateOptionsMenu(menu);
@@ -342,7 +390,7 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
             showNewFunctionDialog();
         }
 
-        // open project settings
+        // open settings
         else if(v == leftDrawerButtonSettings) {
 
             Toast.makeText(this, "Project settings", Toast.LENGTH_SHORT).show();
@@ -480,7 +528,7 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 
         // set new function as current
         currentFunction = function;
-        setTitle(currentFunction.getName());
+        setTitle(currentFunction.getName().split(".arendelle")[0]);
 
         // read code
         try {
@@ -491,6 +539,60 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
         }
 
         // refresh files list
+        onResume();
+
+    }
+
+    /** shows dialog for rename function */
+    private void showRenameFunctionDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_rename_function, null);
+        builder.setView(dialogView);
+        builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                renameFunction(((EditText) dialogView.findViewById(R.id.dialog_rename_function_text_name)).getText().toString());
+            }
+        });
+        builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {}
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.show();
+
+    }
+
+    /** renames a function */
+    private void renameFunction(String newName) {
+
+        File renamedFile;
+
+        if (newName.split("\\.").length > 1) {
+
+            // create folders for namespaces
+            String foldersPath = newName.substring(0, newName.lastIndexOf("."));
+            foldersPath = foldersPath.replace('.', '/');
+            File folders = new File(projectFolder, foldersPath);
+            folders.mkdirs();
+
+            // create renamed function file
+            renamedFile = new File(folders, newName.substring(newName.lastIndexOf(".") + 1) + ".arendelle");
+
+        } else {
+
+            // create renamed file
+            renamedFile = new File(projectFolder, newName + ".arendelle");
+
+        }
+
+        currentFunction.renameTo(renamedFile);
+        currentFunction = renamedFile;
+        setTitle(currentFunction.getName().split(".arendelle")[0]);
         onResume();
 
     }

@@ -158,15 +158,11 @@ public class Main extends ActionBarActivity implements OnItemClickListener {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+        // open project
 		File projectFolder = new File(Environment.getExternalStorageDirectory() + "/Arendelle/" + ((TextView) view.findViewById(R.id.projects_listview_item_text1)).getText().toString());
-
         ActivityOptionsCompat options = ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight());
-
-
 		Intent intent = new Intent(this, Editor.class);
 		intent.putExtra("projectFolder", projectFolder.getAbsolutePath());
-
-
         ActivityCompat.startActivity(this, intent, options.toBundle());
 
 	}
