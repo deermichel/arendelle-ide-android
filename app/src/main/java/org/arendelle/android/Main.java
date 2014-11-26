@@ -27,7 +27,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Main extends ActionBarActivity implements OnItemClickListener {
+public class Main extends ActionBarActivity implements OnItemClickListener, AdapterView.OnItemLongClickListener {
 	
 	// gui objects
 	private ListView listProjects;
@@ -47,6 +47,7 @@ public class Main extends ActionBarActivity implements OnItemClickListener {
 		
 		// setup projects list
 		listProjects.setOnItemClickListener(this);
+        listProjects.setOnItemLongClickListener(this);
 		
 	}
 
@@ -166,5 +167,72 @@ public class Main extends ActionBarActivity implements OnItemClickListener {
         ActivityCompat.startActivity(this, intent, options.toBundle());
 
 	}
-	
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
+
+        // create project options dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setItems(R.array.dialog_file_options, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                File projectFolder = new File(Environment.getExternalStorageDirectory() + "/Arendelle/" + ((TextView) view.findViewById(R.id.projects_listview_item_text1)).getText().toString());
+
+                switch(which) {
+
+                    // rename project
+                    case 0:
+                        showRenameProjectDialog(projectFolder);
+                        break;
+
+                    // delete project
+                    case 1:
+                        Files.delete(projectFolder);
+                        onResume();
+                        break;
+
+                }
+
+            }
+
+        });
+        builder.show();
+
+        return false;
+    }
+
+    /** shows dialog for rename project */
+    private void showRenameProjectDialog(final File projectFolder) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_rename, null);
+        builder.setView(dialogView);
+        builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                renameProject(projectFolder, ((EditText) dialogView.findViewById(R.id.dialog_rename_text_name)).getText().toString());
+            }
+        });
+        builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {}
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.show();
+
+    }
+
+    /** renames a project */
+    private void renameProject(File projectFolder, String newName) {
+
+        projectFolder.renameTo(new File(projectFolder.getParent() + "/" + newName));
+        onResume();
+
+    }
+
 }

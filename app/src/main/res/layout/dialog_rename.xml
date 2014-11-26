@@ -4,28 +4,28 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:text="@string/dialog_rename_function_title"
+        android:text="@string/dialog_rename_title"
         android:textColor="@color/colorAccent"
         android:textSize="25sp"
         android:layout_margin="5dp"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dialog_rename_function_title" />
+        android:id="@+id/dialog_rename_title" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorAccent"
-        android:layout_below="@+id/dialog_rename_function_title" />
+        android:layout_below="@+id/dialog_rename_title" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:inputType="textNoSuggestions"
-        android:hint="@string/dialog_rename_function_name"
-        android:id="@+id/dialog_rename_function_text_name"
-        android:layout_below="@+id/dialog_rename_function_title" />
+        android:hint="@string/dialog_rename_name"
+        android:id="@+id/dialog_rename_text_name"
+        android:layout_below="@+id/dialog_rename_title" />
 
 </RelativeLayout>

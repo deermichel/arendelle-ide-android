@@ -6,6 +6,8 @@
     <string name="app_version">1.0</string>
     <string name="button_ok">OK</string>
     <string name="button_cancel">Cancel</string>
+    <string name="dialog_rename_title">Rename</string>
+    <string name="dialog_rename_name">New name</string>
 
     <!-- Main activity -->
     <string name="drawer_open">Open navigation drawer</string>
@@ -20,8 +22,6 @@
     <string name="action_run">Run</string>
     <string name="dialog_new_function_title">New function</string>
     <string name="dialog_new_function_name">Name</string>
-    <string name="dialog_rename_function_title">Rename function</string>
-    <string name="dialog_rename_function_name">New name</string>
     <string-array name="dialog_file_options">
         <item>Rename</item>
         <item>Delete</item>

@@ -91,5 +91,13 @@ public class Files {
     public static String getRelativePath(File root, File path) {
         return path.getAbsolutePath().substring(root.getAbsolutePath().length() + 1);
     }
+
+    /** deletes a file or folder */
+    public static void delete(File file) {
+
+        if (file.isDirectory()) for (File child : file.listFiles()) delete(child);
+        file.delete();
+
+    }
 	
 }

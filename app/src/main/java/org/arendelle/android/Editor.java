@@ -2,32 +2,24 @@ package org.arendelle.android;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,8 +35,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 public class Editor extends ActionBarActivity implements OnItemClickListener, OnClickListener, AdapterView.OnItemLongClickListener {
 
@@ -213,7 +203,7 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 		
 		// get current function
 		try {
-			currentFunction = new File(projectFolder, Files.parseConfigFile(configFile).get("currentFunction"));
+            currentFunction = new File(projectFolder, Files.parseConfigFile(configFile).get("currentFunction"));
 		} catch (Exception e) {
 			Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
 			finish();
@@ -419,8 +409,8 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 
 	@Override
 	protected void onPause() {
-		super.onPause();
-		
+        super.onPause();
+
 		// save code
 		try {
 			Files.write(currentFunction, textCode.getText().toString());
@@ -431,12 +421,12 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 		// save current function
 		try {
 			HashMap<String, String> properties = Files.parseConfigFile(configFile);
-			properties.put("currentFunction", currentFunction.getName());
+			properties.put("currentFunction", Files.getRelativePath(projectFolder, currentFunction.getAbsoluteFile()));
 			Files.createConfigFile(configFile, properties);
 		} catch (Exception e) {
-			Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();;
+			Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
 		}
-		
+
 	}
 
 	@Override
@@ -548,12 +538,12 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.dialog_rename_function, null);
+        final View dialogView = inflater.inflate(R.layout.dialog_rename, null);
         builder.setView(dialogView);
         builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                renameFunction(((EditText) dialogView.findViewById(R.id.dialog_rename_function_text_name)).getText().toString());
+                renameFunction(((EditText) dialogView.findViewById(R.id.dialog_rename_text_name)).getText().toString());
             }
         });
         builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
@@ -585,7 +575,7 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 
         } else {
 
-            // create renamed file
+            // create renamed function file
             renamedFile = new File(projectFolder, newName + ".arendelle");
 
         }
