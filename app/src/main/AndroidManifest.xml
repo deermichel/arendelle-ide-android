@@ -33,6 +33,10 @@
             android:name=".Editor">
         </activity>
 
+        <activity
+            android:name=".Settings">
+        </activity>
+
     </application>
 
 </manifest>

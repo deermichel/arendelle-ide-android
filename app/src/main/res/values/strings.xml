@@ -14,12 +14,15 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_new">New</string>
     <string name="toast_storage_not_accessible">Storage not accessible</string>
+    <string name="toast_enter_name_for_project">Please enter a name for the project</string>
+    <string name="toast_enter_name_for_main_function">Please enter a name for the main function which is the entry point of your project</string>
     <string name="dialog_new_project_title">New project</string>
     <string name="dialog_new_project_name">Name</string>
     <string name="dialog_new_project_main_function_name">Name of main function</string>
 
     <!-- Editor activity -->
     <string name="action_run">Run</string>
+    <string name="toast_you_cannot_delete_main_function">You cannot delete the main function!</string>
     <string name="dialog_new_function_title">New function</string>
     <string name="dialog_new_function_name">Name</string>
     <string-array name="dialog_file_options">
@@ -58,5 +61,9 @@
     <string name="action_share">Share</string>
     <string name="share_chooser_title">Share via</string>
     <string name="dialog_errors_title">Errors</string>
+
+    <!-- Settings activity -->
+    <string name="settings_title">Project settings</string>
+    <string name="settings_button_change_main_function">Change main function</string>
 
 </resources>

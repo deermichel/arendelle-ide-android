@@ -319,16 +319,7 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
                     // delete function
                     case 1:
                         onItemClick(parent, view, position, id);
-                        currentFunction.delete();
-                        currentFunction = mainFunction;
-                        setTitle(currentFunction.getName().split(".arendelle")[0]);
-                        try {
-                            textCode.setText(Files.read(currentFunction));
-                        } catch (Exception e) {
-                            Toast.makeText(Editor.this, e.toString(), Toast.LENGTH_LONG).show();
-                            finish();
-                        }
-                        onResume();
+                        deleteFunction();
                         break;
 
                 }
@@ -380,11 +371,11 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
             showNewFunctionDialog();
         }
 
-        // open settings
+        // open (project) settings
         else if(v == leftDrawerButtonSettings) {
-
-            Toast.makeText(this, "Project settings", Toast.LENGTH_SHORT).show();
-
+            Intent intent = new Intent(this, Settings.class);
+            intent.putExtra("projectFolder", projectFolder.getAbsolutePath());
+            startActivity(intent);
         }
 
         // add pressed key
@@ -580,9 +571,42 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 
         }
 
+        // update config file if necessary
+        if (currentFunction.getAbsolutePath().equals(mainFunction.getAbsolutePath())) try {
+            HashMap<String, String> properties = Files.parseConfigFile(configFile);
+            properties.put("mainFunction", Files.getRelativePath(projectFolder, renamedFile.getAbsoluteFile()));
+            Files.createConfigFile(configFile, properties);
+            mainFunction = renamedFile;
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+
         currentFunction.renameTo(renamedFile);
         currentFunction = renamedFile;
         setTitle(currentFunction.getName().split(".arendelle")[0]);
+
+        onResume();
+
+    }
+
+    /** deletes current function */
+    private void deleteFunction() {
+
+        // throw error if user wants delete the main function
+        if (currentFunction.getAbsolutePath().equals(mainFunction.getAbsolutePath())) {
+            Toast.makeText(this, R.string.toast_you_cannot_delete_main_function, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        currentFunction.delete();
+        currentFunction = mainFunction;
+        setTitle(currentFunction.getName().split(".arendelle")[0]);
+        try {
+            textCode.setText(Files.read(currentFunction));
+        } catch (Exception e) {
+            Toast.makeText(Editor.this, e.toString(), Toast.LENGTH_LONG).show();
+            finish();
+        }
         onResume();
 
     }
