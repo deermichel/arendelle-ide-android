@@ -424,6 +424,13 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 	protected void onResume() {
 		super.onResume();
 
+        // update main function (for example after changed in project settings)
+        try {
+            mainFunction = new File(projectFolder, Files.parseConfigFile(configFile).get("mainFunction"));
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+
         // get files in project folder
         ArrayList<File> filesList = new ArrayList<File>();
         Files.getFiles(projectFolder, filesList);
@@ -431,7 +438,7 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
         // get arendelle files
         ArrayList<String> functionsList = new ArrayList<String>();
         for (File f : filesList) {
-            if (f.getAbsolutePath().contains(".arendelle")) {
+            if (f.getName().contains(".arendelle")) {
                 String name = Files.getRelativePath(projectFolder, f).replace('/', '.').split(".arendelle")[0];
                 functionsList.add(name);
             }

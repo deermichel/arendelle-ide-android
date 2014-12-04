@@ -35,8 +35,10 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Screen extends ActionBarActivity {
 	
@@ -99,12 +101,18 @@ public class Screen extends ActionBarActivity {
 		}
 		
 	};
+
+    /** color palette */
+    private int colorPalette[] = new int[5];
 	
 	/** code */
 	private String code;
 
     /** project folder */
     private File projectFolder;
+
+    /** configFile */
+    private File configFile;
 	
 	/** Arendelles screen */
 	private CodeScreen screen;
@@ -132,7 +140,26 @@ public class Screen extends ActionBarActivity {
         // get project folder
         projectFolder = new File(getIntent().getExtras().getString("projectFolder"));
 
-	}
+        // get config file
+        configFile = new File(projectFolder, "project.config");
+
+        // get color palette
+        try {
+            HashMap<String, String> properties = Files.parseConfigFile(configFile);
+            colorPalette[0] = Integer.valueOf(properties.get("colorBackground"));
+            colorPalette[1] = Integer.valueOf(properties.get("colorFirst"));
+            colorPalette[2] = Integer.valueOf(properties.get("colorSecond"));
+            colorPalette[3] = Integer.valueOf(properties.get("colorThird"));
+            colorPalette[4] = Integer.valueOf(properties.get("colorFourth"));
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+            finish();
+        }
+
+        // set color palette
+        viewResult.setColorPalette(colorPalette);
+
+    }
 
 	@Override
 	protected void onPause() {
@@ -190,33 +217,8 @@ public class Screen extends ActionBarActivity {
             paint.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
 
             for (int x = 0; x < screen.width; x++) for (int y = 0; y < 5; y++) {
-
-                switch (screen.screen[x][y]) {
-
-                    case 0:
-                        paint.setColor(Color.BLACK);
-                        break;
-
-                    case 1:
-                        paint.setColor(Color.WHITE);
-                        break;
-
-                    case 2:
-                        paint.setColor(Color.LTGRAY);
-                        break;
-
-                    case 3:
-                        paint.setColor(Color.GRAY);
-                        break;
-
-                    case 4:
-                        paint.setColor(Color.DKGRAY);
-                        break;
-
-                }
-
+                paint.setColor(colorPalette[screen.screen[x][y]]);
                 canvas.drawRect(x * Screen.cellWidth, y * Screen.cellHeight, x * Screen.cellWidth + Screen.cellWidth, y * Screen.cellHeight + Screen.cellHeight, paint);
-
             }
 
             File file = new File(projectFolder, "preview.png");
@@ -289,30 +291,7 @@ public class Screen extends ActionBarActivity {
 
         for (int x = 0; x < screen.width; x++) for (int y = 0; y < screen.height; y++) {
 
-            switch (screen.screen[x][y]) {
-
-                case 0:
-                    paint.setColor(Color.BLACK);
-                    break;
-
-                case 1:
-                    paint.setColor(Color.WHITE);
-                    break;
-
-                case 2:
-                    paint.setColor(Color.LTGRAY);
-                    break;
-
-                case 3:
-                    paint.setColor(Color.GRAY);
-                    break;
-
-                case 4:
-                    paint.setColor(Color.DKGRAY);
-                    break;
-
-            }
-
+            paint.setColor(colorPalette[screen.screen[x][y]]);
             canvas.drawRect(x * Screen.cellWidth, y * Screen.cellHeight, x * Screen.cellWidth + Screen.cellWidth, y * Screen.cellHeight + Screen.cellHeight, paint);
 
         }

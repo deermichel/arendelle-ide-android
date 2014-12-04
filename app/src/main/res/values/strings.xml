@@ -64,6 +64,14 @@
 
     <!-- Settings activity -->
     <string name="settings_title">Project settings</string>
-    <string name="settings_button_change_main_function">Change main function</string>
+    <string name="settings_change_main_function">Change main function</string>
+    <string name="settings_change_color_palette">Change color palette</string>
+    <string-array name="color_palettes">
+        <item>Arendelle Classic</item>
+        <item>Beach Blue</item>
+        <item>Arendelle Pink</item>
+        <item>Simple Red</item>
+        <item>White Legacy</item>
+    </string-array>
 
 </resources>

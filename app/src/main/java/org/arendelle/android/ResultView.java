@@ -22,6 +22,9 @@ public class ResultView extends SurfaceView implements SurfaceHolder.Callback {
 	/** paint object */
 	private Paint paint = new Paint();
 
+    /** color palette */
+    private int colorPalette[] = new int[5];
+
 	
 	public ResultView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -55,6 +58,11 @@ public class ResultView extends SurfaceView implements SurfaceHolder.Callback {
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		
 	}
+
+    /** sets color palette */
+    public void setColorPalette(int colorPalette[]) {
+        this.colorPalette = colorPalette;
+    }
 	
 	/** draws Arendelles screen */
 	public void draw(CodeScreen screen) {
@@ -63,31 +71,8 @@ public class ResultView extends SurfaceView implements SurfaceHolder.Callback {
 		if (canvas == null || screen == null) return;
 		
 		for (int x = 0; x < screen.width; x++) for (int y = 0; y < screen.height; y++) {
-				
-			switch (screen.screen[x][y]) {
-			
-			case 0:
-				paint.setColor(Color.BLACK);
-				break;
-				
-			case 1:
-				paint.setColor(Color.WHITE);
-				break;
-				
-			case 2:
-				paint.setColor(Color.LTGRAY);
-				break;
-				
-			case 3:
-				paint.setColor(Color.GRAY);
-				break;
-				
-			case 4:
-				paint.setColor(Color.DKGRAY);
-				break;
-			
-			}
-			
+
+            paint.setColor(colorPalette[screen.screen[x][y]]);
 			canvas.drawRect(x * Screen.cellWidth, y * Screen.cellHeight, x * Screen.cellWidth + Screen.cellWidth, y * Screen.cellHeight + Screen.cellHeight, paint);
 				
 		}

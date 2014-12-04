@@ -116,6 +116,12 @@ public class Main extends ActionBarActivity implements OnItemClickListener, Adap
 		HashMap<String, String> properties = new HashMap<String, String>();
 		properties.put("mainFunction", mainFunctionName + ".arendelle");
 		properties.put("currentFunction", properties.get("mainFunction"));
+        properties.put("colorPalette", "0");
+        properties.put("colorBackground", String.valueOf(getResources().getColor(R.color.arendelleClassicBackground)));
+        properties.put("colorFirst", String.valueOf(getResources().getColor(R.color.arendelleClassicFirst)));
+        properties.put("colorSecond", String.valueOf(getResources().getColor(R.color.arendelleClassicSecond)));
+        properties.put("colorThird", String.valueOf(getResources().getColor(R.color.arendelleClassicThird)));
+        properties.put("colorFourth", String.valueOf(getResources().getColor(R.color.arendelleClassicFourth)));
 		try {
 			Files.createConfigFile(configFile, properties);
 		} catch (Exception e) {
