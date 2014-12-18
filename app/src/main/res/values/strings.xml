@@ -68,10 +68,15 @@
     <string name="settings_change_color_palette">Change color palette</string>
     <string-array name="color_palettes">
         <item>Arendelle Classic</item>
-        <item>Beach Blue</item>
+        <item>Sparkling Blue</item>
         <item>Arendelle Pink</item>
         <item>Simple Red</item>
         <item>White Legacy</item>
     </string-array>
+
+    <!-- JArendelle core -->
+    <string name="dialog_input_title">Input</string>
+    <string name="dialog_input_sign_space">Sign space \'@%1$s\' with a number</string>
+    <string name="dialog_input_sign_stored_space">Sign stored space \'$%1$s\' with a number</string>
 
 </resources>

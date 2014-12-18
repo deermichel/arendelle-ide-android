@@ -141,13 +141,13 @@ public class Settings extends ActionBarActivity {
                     properties.put("colorFourth", String.valueOf(getResources().getColor(R.color.arendelleClassicFourth)));
                     break;
 
-                // Beach Blue
+                // Sparkling Blue
                 case 1:
-                    properties.put("colorBackground", String.valueOf(getResources().getColor(R.color.beachBlueBackground)));
-                    properties.put("colorFirst", String.valueOf(getResources().getColor(R.color.beachBlueFirst)));
-                    properties.put("colorSecond", String.valueOf(getResources().getColor(R.color.beachBlueSecond)));
-                    properties.put("colorThird", String.valueOf(getResources().getColor(R.color.beachBlueThird)));
-                    properties.put("colorFourth", String.valueOf(getResources().getColor(R.color.beachBlueFourth)));
+                    properties.put("colorBackground", String.valueOf(getResources().getColor(R.color.sparklingBlueBackground)));
+                    properties.put("colorFirst", String.valueOf(getResources().getColor(R.color.sparklingBlueFirst)));
+                    properties.put("colorSecond", String.valueOf(getResources().getColor(R.color.sparklingBlueSecond)));
+                    properties.put("colorThird", String.valueOf(getResources().getColor(R.color.sparklingBlueThird)));
+                    properties.put("colorFourth", String.valueOf(getResources().getColor(R.color.sparklingBlueFourth)));
                     break;
 
                 // Arendelle Pink

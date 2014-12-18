@@ -69,14 +69,13 @@ public class Screen extends ActionBarActivity {
 		public void run() {
 			super.run();
 			long timestamp = System.nanoTime();
-			MasterEvaluator.evaluate(code, screen);
+			MasterEvaluator.evaluate(code, screen, Screen.this);
 			final long elapsedTime = System.nanoTime() - timestamp;
 			runOnUiThread(new Runnable() {
 				
 				@Override
 				public void run() {
 					textChronometer.setText(String.format("%f ms", elapsedTime / 1000000f));
-					// TODO: textError.setText(Reporter.errors);
 
                     if (Reporter.errors.length() > 0) {
 
@@ -217,11 +216,27 @@ public class Screen extends ActionBarActivity {
             paint.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
 
             for (int x = 0; x < screen.width; x++) for (int y = 0; y < 5; y++) {
-                paint.setColor(colorPalette[screen.screen[x][y]]);
+                switch (screen.screen[x][y]) {
+                    case 0:
+                        paint.setColor(getResources().getColor(R.color.arendelleClassicBackground));
+                        break;
+                    case 1:
+                        paint.setColor(getResources().getColor(R.color.arendelleClassicFirst));
+                        break;
+                    case 2:
+                        paint.setColor(getResources().getColor(R.color.arendelleClassicSecond));
+                        break;
+                    case 3:
+                        paint.setColor(getResources().getColor(R.color.arendelleClassicThird));
+                        break;
+                    case 4:
+                        paint.setColor(getResources().getColor(R.color.arendelleClassicFourth));
+                        break;
+                }
                 canvas.drawRect(x * Screen.cellWidth, y * Screen.cellHeight, x * Screen.cellWidth + Screen.cellWidth, y * Screen.cellHeight + Screen.cellHeight, paint);
             }
 
-            File file = new File(projectFolder, "preview.png");
+            File file = new File(projectFolder, ".preview.png");
             Files.saveImage(file, bitmap);
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();

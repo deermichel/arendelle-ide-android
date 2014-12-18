@@ -51,7 +51,7 @@ public class Keys {
 		return expression;
 	}
 	
-	//TODO:/** initalizes the key listener */
+	//TODO:/** initalizes key listener */
 	/*public static void init() {
 		
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {

@@ -13,12 +13,12 @@
     <color name="arendelleClassicThird">#8C8A8C</color>
     <color name="arendelleClassicFourth">#424542</color>
 
-    <!-- Beach Blue palette -->
-    <color name="beachBlueBackground">#FFFFFF</color>
-    <color name="beachBlueFirst">#4985E6</color>
-    <color name="beachBlueSecond">#499EE6</color>
-    <color name="beachBlueThird">#49B3E6</color>
-    <color name="beachBlueFourth">#49CEE6</color>
+    <!-- Sparkling Blue palette -->
+    <color name="sparklingBlueBackground">#000000</color>
+    <color name="sparklingBlueFirst">#49CEE6</color>
+    <color name="sparklingBlueSecond">#49B3E6</color>
+    <color name="sparklingBlueThird">#499EE6</color>
+    <color name="sparklingBlueFourth">#4985E6</color>
 
     <!-- Arendelle Pink palette -->
     <color name="arendellePinkBackground">#000000</color>

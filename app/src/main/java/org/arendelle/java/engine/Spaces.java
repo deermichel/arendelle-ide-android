@@ -20,15 +20,30 @@
 package org.arendelle.java.engine;
 
 import java.util.SortedMap;
+import java.util.logging.LogRecord;
 
 import org.arendelle.android.Main;
 import org.arendelle.android.R;
+import org.arendelle.android.Settings;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class Spaces {
+
+    /** Activity instance for input dialogs */
+    static Activity context;
+
 
 	/** replaces all spaces (variables) in the given expression with their values
 	 * @param expression
@@ -48,7 +63,7 @@ public class Spaces {
 	 * @param screen
 	 * @param spaces
 	 */
-	public static void parse(Arendelle arendelle, CodeScreen screen, SortedMap<String, String> spaces) {
+	public static void parse(final Arendelle arendelle, final CodeScreen screen, final SortedMap<String, String> spaces) {
 		
 		// determine if it should be a stored space
 		if (arendelle.code.charAt(arendelle.i + 1) == '$') {
@@ -87,12 +102,41 @@ public class Spaces {
 			
 			// get user input
 			if (!screen.interactiveMode) {
-				Reporter.report("Not running in Interactive Mode!", arendelle.line);
-				return;
-			}
-			//TODO:String value = JOptionPane.showInputDialog("Sign space '@" + name + "' with a number:");
-			//TODO:spaces.put(name, String.valueOf(new Expression(Replacer.replace(value, screen, spaces)).eval().intValue()));
-			
+                Reporter.report("Not running in Interactive Mode!", arendelle.line);
+                return;
+            }
+
+            /*/ create input dialog
+            if (context == null) return;
+            final String finalName = name;
+            final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = context.getLayoutInflater();
+            final View dialogView = inflater.inflate(R.layout.dialog_input, null);
+            ((TextView) dialogView.findViewById(R.id.dialog_input_number)).setHint(String.format(context.getText(R.string.dialog_input_sign_space).toString(), name));
+            builder.setView(dialogView);
+            builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    spaces.put(finalName, ((EditText) dialogView.findViewById(R.id.dialog_input_number)).getText().toString());
+
+                }
+            });
+            builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            context.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    AlertDialog dialog = builder.create();
+                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                    dialog.show();
+                }
+            });
+            arendelle.i = arendelle.code.length();*/
+
 		} else if (expression.equals("done")) {
 			
 			// remove space
@@ -133,5 +177,10 @@ public class Spaces {
 		}
 		
 	}
+
+    /** initalizes spaces kernel */
+	public static void init(Activity context) {
+        Spaces.context = context;
+    }
 	
 }

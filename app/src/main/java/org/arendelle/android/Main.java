@@ -160,7 +160,7 @@ public class Main extends ActionBarActivity implements OnItemClickListener, Adap
 
 		ProjectsListItem items[] = new ProjectsListItem[projectsList.size()];
 		for (int i = 0; i < items.length; i++) {
-            File preview = new File(Environment.getExternalStorageDirectory() + "/Arendelle/" + projectsList.get(i), "preview.png");
+            File preview = new File(Environment.getExternalStorageDirectory() + "/Arendelle/" + projectsList.get(i), ".preview.png");
 	        items[i] = new ProjectsListItem(projectsList.get(i), BitmapFactory.decodeFile(preview.getAbsolutePath()));
 		}
 

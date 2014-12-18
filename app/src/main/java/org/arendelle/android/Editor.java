@@ -220,7 +220,7 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 
         // setup header in left drawer
         View header = getLayoutInflater().inflate(R.layout.drawer_listview_header, null);
-        ((ImageView) header.findViewById(R.id.drawer_listview_header_preview)).setImageBitmap(BitmapFactory.decodeFile(new File(projectFolder, "preview.png").getAbsolutePath()));
+        ((ImageView) header.findViewById(R.id.drawer_listview_header_preview)).setImageBitmap(BitmapFactory.decodeFile(new File(projectFolder, ".preview.png").getAbsolutePath()));
         ((TextView) header.findViewById(R.id.drawer_listview_header_text)).setText(projectFolder.getName());
         leftDrawerListView.addHeaderView(header, null, false);
 

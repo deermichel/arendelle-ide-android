@@ -19,6 +19,8 @@
 
 package org.arendelle.java.engine;
 
+import android.app.Activity;
+
 import java.util.Comparator;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -29,8 +31,9 @@ public class MasterEvaluator {
 	 * The very main evaluator which runs the given code on the screen
 	 * @param code a given Arendelle code
 	 * @param screen a given Screen instance
+     * @param context a given Activity context for dialogs
 	 */
-	public static void evaluate(String code, CodeScreen screen) {
+	public static void evaluate(String code, CodeScreen screen, Activity context) {
 		
 		// remove comments
 		code = MasterEvaluator.removeComments(code);
@@ -50,8 +53,11 @@ public class MasterEvaluator {
 					}
 		});
 		
-		// initalize the key listener
+		// initalize key listener
 		//TODO:Keys.init();
+
+        // initalize spaces kernel
+        Spaces.init(context);
 		
 		// reset errors
 		Reporter.errors = "";
