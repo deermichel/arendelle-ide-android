@@ -69,7 +69,11 @@ public class Screen extends ActionBarActivity {
 		public void run() {
 			super.run();
 			long timestamp = System.nanoTime();
-			MasterEvaluator.evaluate(code, screen, Screen.this);
+            try {
+                MasterEvaluator.evaluate(code, screen, Screen.this);
+            } catch (Exception e) {
+                Reporter.report(e.toString(), -1);
+            }
 			final long elapsedTime = System.nanoTime() - timestamp;
 			runOnUiThread(new Runnable() {
 				
@@ -266,6 +270,7 @@ public class Screen extends ActionBarActivity {
 			evaluate();
 			return true;
 
+        // share result
         case R.id.action_share:
             share();
             return true;

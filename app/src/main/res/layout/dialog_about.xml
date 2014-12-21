@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/background_floating_material_dark"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="@string/dialog_about_title"
+        android:textColor="@color/colorAccent"
+        android:textSize="25sp"
+        android:layout_margin="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_about_title" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorAccent"
+        android:layout_below="@+id/dialog_about_title" />
+
+    <WebView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:scrollbars="vertical"
+        android:autoLink="web"
+        android:id="@+id/dialog_about_text"
+        android:layout_below="@+id/dialog_about_title" />
+
+</RelativeLayout>

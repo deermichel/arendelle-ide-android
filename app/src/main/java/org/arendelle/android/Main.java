@@ -1,6 +1,7 @@
 package org.arendelle.android;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,23 +10,28 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.arendelle.java.engine.Reporter;
 
 public class Main extends ActionBarActivity implements OnItemClickListener, AdapterView.OnItemLongClickListener {
 	
@@ -59,13 +65,61 @@ public class Main extends ActionBarActivity implements OnItemClickListener, Adap
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
+
+        Intent intent;
 		switch (item.getItemId()) {
-		case R.id.action_new:
-			showNewProjectDialog();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
+
+            // new project
+            case R.id.action_new:
+                showNewProjectDialog();
+                return true;
+
+            // show help (book)
+            case R.id.action_help:
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("http://arendelle.org/"));
+                startActivity(intent);
+                return true;
+
+            // rate app
+            case R.id.action_rate:
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("market://details?id=org.arendelle.android"));
+                startActivity(intent);
+                return true;
+
+            // contact or report bug
+            case R.id.action_contact:
+                intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("message/rfc822");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"hello@arendelle.org"});
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Contact / Report Bug");
+                intent.putExtra(Intent.EXTRA_TEXT,
+                                "App version: " + getText(R.string.app_version) + "\n" +
+                                "--------------------------------\n" +
+                                getText(R.string.mail_header) + "\n"
+                );
+                startActivity(Intent.createChooser(intent, getText(R.string.mail_chooser_title)));
+                return true;
+
+            // show about screen
+            case R.id.action_about:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                LayoutInflater inflater = getLayoutInflater();
+                final View dialogView = inflater.inflate(R.layout.dialog_about, null);
+                ((WebView) dialogView.findViewById(R.id.dialog_about_text)).loadUrl("file:///android_res/raw/about.html");
+                builder.setView(dialogView);
+                builder.setNeutralButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                builder.show();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
 		}
 		
 	}
