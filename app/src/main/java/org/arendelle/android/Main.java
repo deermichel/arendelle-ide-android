@@ -62,7 +62,7 @@ public class Main extends ActionBarActivity implements OnItemClickListener, Adap
         if (prefs.getBoolean("firstStart", true)) {
             prefs.edit().putBoolean("firstStart", false).apply();
             Intent intent = new Intent(this, Webview.class);
-            intent.putExtra("title", getText(R.string.action_basics));
+            intent.putExtra("title", getText(R.string.welcome_title));
             intent.putExtra("url", "file:///android_res/raw/welcome.html");
             startActivity(intent);
         }

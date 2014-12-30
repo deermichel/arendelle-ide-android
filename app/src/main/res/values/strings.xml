@@ -10,6 +10,7 @@
     <string name="dialog_rename_name">New name</string>
 
     <!-- Main activity -->
+    <string name="welcome_title">Welcome to Arendelle</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_new">New</string>
