@@ -8,6 +8,7 @@
         android:id="@+id/drawer_listview_header_preview"
         android:layout_centerHorizontal="true"
         android:scaleType="centerCrop"
+        android:background="@android:color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

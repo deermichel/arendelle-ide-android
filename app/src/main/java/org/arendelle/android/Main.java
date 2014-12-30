@@ -9,6 +9,8 @@ import java.util.HashMap;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -54,6 +56,16 @@ public class Main extends ActionBarActivity implements OnItemClickListener, Adap
 		// setup projects list
 		listProjects.setOnItemClickListener(this);
         listProjects.setOnItemLongClickListener(this);
+
+        // open welcome dialog on first start
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        if (prefs.getBoolean("firstStart", true)) {
+            prefs.edit().putBoolean("firstStart", false).apply();
+            Intent intent = new Intent(this, Webview.class);
+            intent.putExtra("title", getText(R.string.action_basics));
+            intent.putExtra("url", "file:///android_res/raw/welcome.html");
+            startActivity(intent);
+        }
 		
 	}
 
@@ -74,10 +86,18 @@ public class Main extends ActionBarActivity implements OnItemClickListener, Adap
                 showNewProjectDialog();
                 return true;
 
+            // show welcome screen
+            case R.id.action_basics:
+                intent = new Intent(this, Webview.class);
+                intent.putExtra("title", getText(R.string.action_basics));
+                intent.putExtra("url", "file:///android_res/raw/welcome.html");
+                startActivity(intent);
+                return true;
+
             // show help (book)
             case R.id.action_help:
                 intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("http://arendelle.org/"));
+                intent.setData(Uri.parse("http://book.arendelle.org/"));
                 startActivity(intent);
                 return true;
 
@@ -88,33 +108,19 @@ public class Main extends ActionBarActivity implements OnItemClickListener, Adap
                 startActivity(intent);
                 return true;
 
-            // contact or report bug
-            case R.id.action_contact:
-                intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("message/rfc822");
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"hello@arendelle.org"});
-                intent.putExtra(Intent.EXTRA_SUBJECT, "Contact / Report Bug");
-                intent.putExtra(Intent.EXTRA_TEXT,
-                                "App version: " + getText(R.string.app_version) + "\n" +
-                                "--------------------------------\n" +
-                                getText(R.string.mail_header) + "\n"
-                );
-                startActivity(Intent.createChooser(intent, getText(R.string.mail_chooser_title)));
+            // report bug
+            case R.id.action_report_bug:
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("http://reporter.arendelle.org/bug/android"));
+                startActivity(intent);
                 return true;
 
             // show about screen
             case R.id.action_about:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                LayoutInflater inflater = getLayoutInflater();
-                final View dialogView = inflater.inflate(R.layout.dialog_about, null);
-                ((WebView) dialogView.findViewById(R.id.dialog_about_text)).loadUrl("file:///android_res/raw/about.html");
-                builder.setView(dialogView);
-                builder.setNeutralButton(R.string.button_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                builder.show();
+                intent = new Intent(this, Webview.class);
+                intent.putExtra("title", getText(R.string.action_about));
+                intent.putExtra("url", "file:///android_res/raw/about.html");
+                startActivity(intent);
                 return true;
 
             default:
@@ -182,8 +188,18 @@ public class Main extends ActionBarActivity implements OnItemClickListener, Adap
 			Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
 			return;
 		}
-		
-		// start editor
+
+        // create preview image
+        Bitmap bitmap = Bitmap.createBitmap(getResources().getDisplayMetrics().widthPixels, 20 * (int)getResources().getDisplayMetrics().density * 5, Bitmap.Config.ARGB_8888);
+        File file = new File(projectFolder, ".preview.png");
+        try {
+            Files.saveImage(file, bitmap);
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // start editor
 		Intent intent = new Intent(this, Editor.class);
 		intent.putExtra("projectFolder", projectFolder.getAbsolutePath());
 		startActivity(intent);

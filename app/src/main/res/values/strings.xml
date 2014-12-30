@@ -13,9 +13,10 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_new">New</string>
+    <string name="action_basics">Basics</string>
     <string name="action_help">Help</string>
     <string name="action_rate">Rate Me</string>
-    <string name="action_contact">Contact / Report Bug</string>
+    <string name="action_contact">Report Bug</string>
     <string name="action_about">About</string>
     <string name="toast_storage_not_accessible">Storage not accessible</string>
     <string name="toast_enter_name_for_project">Please enter a name for the project</string>
@@ -23,9 +24,6 @@
     <string name="dialog_new_project_title">New project</string>
     <string name="dialog_new_project_name">Name</string>
     <string name="dialog_new_project_main_function_name">Name of main function</string>
-    <string name="mail_header">What did you do?</string>
-    <string name="mail_chooser_title">Send mail via</string>
-    <string name="dialog_about_title">About</string>
 
     <!-- Editor activity -->
     <string name="action_run">Run</string>

@@ -11,6 +11,7 @@
 
     <application
         android:allowBackup="true"
+        android:installLocation="auto"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/ArendelleTheme" >
@@ -35,6 +36,10 @@
 
         <activity
             android:name=".Settings">
+        </activity>
+
+        <activity
+            android:name=".Webview">
         </activity>
 
     </application>
