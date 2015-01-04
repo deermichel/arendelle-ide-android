@@ -19,7 +19,7 @@
 
 package org.arendelle.java.engine;
 
-import java.util.SortedMap;
+import java.util.HashMap;
 
 public class Replacer {
 
@@ -29,13 +29,12 @@ public class Replacer {
 	 * @param spaces
 	 * @return The final expression
 	 */
-	public static String replace(String expression, CodeScreen screen, SortedMap<String, String> spaces) {
+	public static String replace(String expression, CodeScreen screen, HashMap<String, String> spaces) {
 
 		expression = Replacer.replaceFunctions(expression, screen, spaces);
 		expression = Sources.replace(expression, screen);
 		expression = Spaces.replace(expression, screen, spaces);
-		expression = StoredSpaces.replace(expression, screen);
-		expression = Keys.replace(expression, screen);
+		expression = StoredSpaces.replace(expression, screen, spaces);
 		
 		expression = Replacer.catchErrors(expression);
 		
@@ -48,7 +47,7 @@ public class Replacer {
 	 * @param spaces
 	 * @return The final expression
 	 */
-	public static String replaceFunctions(String expression, CodeScreen screen, SortedMap<String, String> spaces) {
+	public static String replaceFunctions(String expression, CodeScreen screen, HashMap<String, String> spaces) {
 
 		// copy whole code without functions
 		String expressionWithoutFunctions = "";
@@ -74,9 +73,29 @@ public class Replacer {
 				}
 				funcExpression += expression.charAt(i);
 				
+				// get index
+				String index = "";
+				if (i < expression.length() - 1 && expression.charAt(i + 1) == '[') {
+					nestedGrammars = 0;
+					for (int j = i + 2; !(expression.charAt(j) == ']' && nestedGrammars == 0); j++) {
+						index += expression.charAt(j);
+						i = j;
+						
+						if (expression.charAt(j) == '[') {
+							nestedGrammars++;
+						} else if (expression.charAt(j) == ']') {
+							nestedGrammars--;
+						}
+					}
+					index = String.valueOf(new Expression(Replacer.replace(index, screen, spaces)).eval().intValue());
+					i++;
+				} else {
+					index = "0";
+				}
+				
 				// setup temporarely Arendelle instance and run the function expression
 				Arendelle tempArendelle = new Arendelle(funcExpression);
-				expressionWithoutFunctions += FunctionParser.parse(tempArendelle, screen, spaces);
+				expressionWithoutFunctions += Arrays.getArray(FunctionParser.parse(tempArendelle, screen, spaces)).get(index);
 				
 			} else {
 				expressionWithoutFunctions += expression.charAt(i);

@@ -19,8 +19,7 @@
 
 package org.arendelle.java.engine;
 
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 public class LoopParser {
 	
@@ -36,7 +35,7 @@ public class LoopParser {
 	 * @param screen 
 	 * @param spaces
 	 */
-	public static void parse(Arendelle arendelle, CodeScreen screen, SortedMap<String, String> spaces) {
+	public static void parse(Arendelle arendelle, CodeScreen screen, HashMap<String, String> spaces) {
 		
 		// get mathematical expression for loop
 		String expression = "";
@@ -71,7 +70,7 @@ public class LoopParser {
 		
 		// create Arendelle instances and temporarely spaces
 		Arendelle loopArendelle = new Arendelle(loopCode);
-		SortedMap<String, String> loopSpaces = new TreeMap<String, String>(spaces.comparator());
+		HashMap<String, String> loopSpaces = new HashMap<String, String>();
 		loopSpaces.putAll(spaces);
 
 		// fix for floOR error

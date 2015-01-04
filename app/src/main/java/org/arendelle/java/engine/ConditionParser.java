@@ -19,8 +19,7 @@
 
 package org.arendelle.java.engine;
 
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 public class ConditionParser {
 
@@ -29,7 +28,7 @@ public class ConditionParser {
 	 * @param screen
 	 * @param spaces
 	 */
-	public static void parse(Arendelle arendelle, CodeScreen screen, SortedMap<String, String> spaces) {
+	public static void parse(Arendelle arendelle, CodeScreen screen, HashMap<String, String> spaces) {
 		
 		// get mathematical expression for condition
 		String expression = "";
@@ -81,7 +80,7 @@ public class ConditionParser {
 		// create Arendelle instances and temporarely spaces
 		Arendelle trueArendelle = new Arendelle(trueCode);
 		Arendelle falseArendelle = new Arendelle(falseCode);
-		SortedMap<String, String> conditionSpaces = new TreeMap<String, String>(spaces.comparator());
+		HashMap<String, String> conditionSpaces = new HashMap<String, String>();
 		conditionSpaces.putAll(spaces);
 		
 		// run the condition

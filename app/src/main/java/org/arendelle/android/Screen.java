@@ -70,7 +70,7 @@ public class Screen extends ActionBarActivity {
 			super.run();
 			long timestamp = System.nanoTime();
             try {
-                MasterEvaluator.evaluate(code, screen, Screen.this);
+                MasterEvaluator.evaluate(code, screen);
             } catch (Exception e) {
                 Reporter.report(e.toString(), -1);
             }

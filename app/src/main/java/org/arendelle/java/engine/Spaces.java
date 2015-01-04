@@ -19,41 +19,73 @@
 
 package org.arendelle.java.engine;
 
-import java.util.SortedMap;
-import java.util.logging.LogRecord;
+import org.arendelle.android.Files;
 
-import org.arendelle.android.Main;
-import org.arendelle.android.R;
-import org.arendelle.android.Settings;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.TextView;
+import java.io.File;
+import java.util.HashMap;
 
 public class Spaces {
 
-    /** Activity instance for input dialogs */
-    static Activity context;
-
-
 	/** replaces all spaces (variables) in the given expression with their values
 	 * @param expression
+	 * @param screen
+	 * @param spaces
 	 * @return The final expression
 	 */
-	public static String replace(String expression, CodeScreen screen, SortedMap<String, String> spaces) {
-		
-		for (String name : spaces.keySet()) {
-			expression = expression.replaceAll('@' + name, spaces.get(name));
+	public static String replace(String expression, CodeScreen screen, HashMap<String, String> spaces) {
+
+		// copy whole code without spaces
+		String expressionWithoutSpaces = "";
+		for (int i = 0; i < expression.length(); i++) {
+			
+			if (expression.charAt(i) == '@') {
+				
+				i++;
+				
+				// get name
+				String name = "";
+				while(!(expression.substring(i, i + 1).matches("[^A-Za-z0-9.]"))) {
+					name += expression.charAt(i);
+					i++;
+					if (i >= expression.length()) break;
+				}
+
+				// get index
+				if (i < expression.length() && expression.charAt(i) == '[') {
+					String index = "";
+					int nestedGrammars = 0;
+					for (int j = i + 1; !(expression.charAt(j) == ']' && nestedGrammars == 0); j++) {
+						index += expression.charAt(j);
+						i = j;
+						
+						if (expression.charAt(j) == '[') {
+							nestedGrammars++;
+						} else if (expression.charAt(j) == ']') {
+							nestedGrammars--;
+						}
+					}
+					index = String.valueOf(new Expression(Replacer.replace(index, screen, spaces)).eval().intValue());
+					expressionWithoutSpaces += Arrays.getArray(spaces.get(name)).get(index);
+					i++;
+				}
+				
+				// or count items
+				else if (i < expression.length() && expression.charAt(i) == '?') {
+					expressionWithoutSpaces += String.valueOf(Arrays.getArray(spaces.get(name)).size());
+				}
+				
+				// or return index = 0
+				else {
+					expressionWithoutSpaces += Arrays.getArray(spaces.get(name)).get("0");
+					i--;
+				}
+				
+			} else {
+				expressionWithoutSpaces += expression.charAt(i);
+			}
+			
 		}
+		expression = expressionWithoutSpaces;
 		
 		return expression;
 	}
@@ -63,7 +95,7 @@ public class Spaces {
 	 * @param screen
 	 * @param spaces
 	 */
-	public static void parse(final Arendelle arendelle, final CodeScreen screen, final SortedMap<String, String> spaces) {
+	public static void parse(Arendelle arendelle, CodeScreen screen, HashMap<String, String> spaces) {
 		
 		// determine if it should be a stored space
 		if (arendelle.code.charAt(arendelle.i + 1) == '$') {
@@ -73,14 +105,33 @@ public class Spaces {
 		
 		// get name
 		String name = "";
-		for (int i = arendelle.i + 1; !(arendelle.code.charAt(i) == ',' || arendelle.code.charAt(i) == ')'); i++) {
+		for (int i = arendelle.i + 1; !(arendelle.code.charAt(i) == ',' || arendelle.code.charAt(i) == ')' || arendelle.code.charAt(i) == '['); i++) {
 			name += arendelle.code.charAt(i);
 			arendelle.i = i;
 		}
 		
+		// get index for array
+		String index = "";
+		int nestedGrammars = 0;
+		if (arendelle.code.charAt(arendelle.i + 1) == '[') {
+			for (int i = arendelle.i + 2; !(arendelle.code.charAt(i) == ']' && nestedGrammars == 0); i++) {
+				index += arendelle.code.charAt(i);
+				arendelle.i = i;
+				
+				if (arendelle.code.charAt(i) == '[') {
+					nestedGrammars++;
+				} else if (arendelle.code.charAt(i) == ']') {
+					nestedGrammars--;
+				}
+			}
+			index = String.valueOf(new Expression(Replacer.replace(index, screen, spaces)).eval().intValue());
+			arendelle.i++;
+		} else {
+			index = "0";
+		}
+		
 		// get mathematical expression for condition
 		String expression = "";
-		int nestedGrammars = 0;
 		if (arendelle.code.charAt(arendelle.i + 1) == ',') {
 			for (int i = arendelle.i + 2; !(arendelle.code.charAt(i) == ')' && nestedGrammars == 0); i++) {
 				expression += arendelle.code.charAt(i);
@@ -102,46 +153,28 @@ public class Spaces {
 			
 			// get user input
 			if (!screen.interactiveMode) {
-                Reporter.report("Not running in Interactive Mode!", arendelle.line);
-                return;
-            }
-
-            /*/ create input dialog
-            if (context == null) return;
-            final String finalName = name;
-            final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            LayoutInflater inflater = context.getLayoutInflater();
-            final View dialogView = inflater.inflate(R.layout.dialog_input, null);
-            ((TextView) dialogView.findViewById(R.id.dialog_input_number)).setHint(String.format(context.getText(R.string.dialog_input_sign_space).toString(), name));
-            builder.setView(dialogView);
-            builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                    spaces.put(finalName, ((EditText) dialogView.findViewById(R.id.dialog_input_number)).getText().toString());
-
-                }
-            });
-            builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                }
-            });
-            context.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    AlertDialog dialog = builder.create();
-                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-                    dialog.show();
-                }
-            });
-            arendelle.i = arendelle.code.length();*/
-
+				Reporter.report("Not running in Interactive Mode!", arendelle.line);
+				return;
+			}
+			
 		} else if (expression.equals("done")) {
 			
 			// remove space
 			spaces.remove(name);
-			return;
+			
+		} else if(expression.charAt(0) == '@' && spaces.containsKey(expression.substring(1))) {
+			
+			// create space array from another space array
+			spaces.put(name, spaces.get(expression.substring(1)));
+			
+		} else if(expression.charAt(0) == '$' && new File(screen.mainPath + "/" + expression.substring(1).replace('.', '/') + ".space").exists()) {
+			
+			// try to create space array from a stored space array
+			try {
+				spaces.put(name, Files.read(new File(screen.mainPath + "/" + expression.substring(1).replace('.', '/') + ".space")));
+			} catch (Exception e) {
+				Reporter.report(e.toString(), arendelle.line);
+			}
 			
 		} else {
 			
@@ -154,8 +187,6 @@ public class Spaces {
 					Reporter.report("Not running in Interactive Mode!", arendelle.line);
 					return;
 				}
-				//TODO:String value = JOptionPane.showInputDialog(expression.substring(1, expression.length() - 1));
-				//TODO:spaces.put(name, String.valueOf(new Expression(Replacer.replace(value, screen, spaces)).eval().intValue()));
 				
 				break;
 				
@@ -164,12 +195,12 @@ public class Spaces {
 			case '*':
 			case '/':
 				// edit space
-				spaces.put(name, String.valueOf(new Expression(Replacer.replace(spaces.get(name) + expression.charAt(0) + expression.substring(1), screen, spaces)).eval().intValue()));
+				Arrays.put(String.valueOf(new Expression(Replacer.replace(Arrays.getArray(spaces.get(name)).get(index) + expression.charAt(0) + expression.substring(1), screen, spaces)).eval().intValue()), index, name, spaces);
 				break;
 				
 			default:
 				// create space
-				spaces.put(name, String.valueOf(new Expression(Replacer.replace(expression, screen, spaces)).eval().intValue()));
+				Arrays.put(String.valueOf(new Expression(Replacer.replace(expression, screen, spaces)).eval().intValue()), index, name, spaces);
 				break;
 				
 			}
@@ -177,10 +208,5 @@ public class Spaces {
 		}
 		
 	}
-
-    /** initalizes spaces kernel */
-	public static void init(Activity context) {
-        Spaces.context = context;
-    }
 	
 }

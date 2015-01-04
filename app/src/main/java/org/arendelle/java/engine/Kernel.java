@@ -19,7 +19,7 @@
 
 package org.arendelle.java.engine;
 
-import java.util.SortedMap;
+import java.util.HashMap;
 
 public class Kernel {
 
@@ -29,7 +29,7 @@ public class Kernel {
 	 * @param screen
 	 * @param spaces
 	 */
-	public static void eval(Arendelle arendelle, CodeScreen screen, SortedMap<String, String> spaces) {
+	public static void eval(Arendelle arendelle, CodeScreen screen, HashMap<String, String> spaces) {
 		
 		/*
 		 *  So what we do is we read the code char-by-char and run the commands
@@ -119,9 +119,9 @@ public class Kernel {
 				break;
 				
 			case 'c':
-                if (screen.x >= 0 && screen.y >= 0 && screen.x < screen.width && screen.y < screen.height) {
-                    screen.screen[screen.x][screen.y] = 0;
-                }
+				if (screen.x >= 0 && screen.y >= 0 && screen.x < screen.width && screen.y < screen.height) {
+					screen.screen[screen.x][screen.y] = 0;
+				}
 				break;
 				
 			case 'w':
@@ -138,7 +138,6 @@ public class Kernel {
 			    	Reporter.report("Not running in Interactive Mode!", arendelle.line);
 			    	break;
 			    }
-			    if (!Keys.any) arendelle.i--;
 				break;
 				
 			case 'i':

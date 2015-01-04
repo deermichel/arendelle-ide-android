@@ -30,7 +30,7 @@ public class Reporter {
 	 * @param line line where the error occurs
 	 */
 	public static void report(String message, int line) {
-        if (errors.contains(message)) return;
+		if (errors.contains(message)) return;
         if (line == -1) {
             errors += message + "\n";
         } else {
