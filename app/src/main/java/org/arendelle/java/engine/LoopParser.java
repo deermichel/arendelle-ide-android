@@ -95,8 +95,20 @@ public class LoopParser {
 			
 		} else {
 			
-			// run the for loop
+			// get for loop times
 			int loopTimes = new Expression(Replacer.replace(expression, screen, loopSpaces)).eval().intValue();
+			
+			// EXCEPTION: waiting loop [..., w]
+			if (loopCode.toLowerCase().equals("w")) {
+				try {
+					Thread.sleep(loopTimes);
+				} catch (Exception e) {
+					Reporter.report(e.toString(), arendelle.line);
+				}
+				return;
+			}
+			
+			// run the for loop
 			for (int i = 0; i < loopTimes; i++) {
 				loopArendelle.i = 0;
 				Kernel.eval(loopArendelle, screen, loopSpaces);
