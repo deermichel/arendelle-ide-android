@@ -65,7 +65,8 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 		keyMinusSign, 
 		keyPlusSign, 
 		keyMultiplySign, 
-		keyFunctionSign, 
+		keyFunctionSign,
+        keyCountSign,
 		keyStoredSpaceSign, 
 		keyKeySign, 
 		keyPowSign,
@@ -119,6 +120,7 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 		keyPlusSign = (Button) findViewById(R.id.key_plus_sign);
 		keyMultiplySign = (Button) findViewById(R.id.key_multiply_sign);
 		keyFunctionSign = (Button) findViewById(R.id.key_function_sign);
+        keyCountSign = (Button) findViewById(R.id.key_count_sign);
 		keyStoredSpaceSign = (Button) findViewById(R.id.key_stored_space_sign);
 		keyKeySign = (Button) findViewById(R.id.key_key_sign);
 		keyPowSign = (Button) findViewById(R.id.key_pow_sign);
@@ -178,6 +180,7 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 		keyPlusSign.setOnClickListener(this);
 		keyMultiplySign.setOnClickListener(this);
 		keyFunctionSign.setOnClickListener(this);
+        keyCountSign.setOnClickListener(this);
 		keyStoredSpaceSign.setOnClickListener(this);
 		keyKeySign.setOnClickListener(this);
 		keyPowSign.setOnClickListener(this);

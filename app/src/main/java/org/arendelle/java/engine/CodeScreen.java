@@ -83,7 +83,7 @@ public class CodeScreen {
 		this.rand = new Random();
 		
 		this.screen = new int[width][height];
-		this.title = "Arendelle";
+		this.title = "";
 		
 		this.mainPath = mainPath;
 		

@@ -151,6 +151,13 @@
                     android:text="@string/key_function_sign" />
 
                 <Button
+                    android:id="@+id/key_count_sign"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_count_sign" />
+
+                <Button
                     android:id="@+id/key_stored_space_sign"
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"

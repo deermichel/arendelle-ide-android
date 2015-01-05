@@ -22,6 +22,7 @@ package org.arendelle.java.engine;
 import org.arendelle.android.Files;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 public class StoredSpaces {
@@ -120,6 +121,7 @@ public class StoredSpaces {
 		
 		// get index for array
 		String index = "";
+		boolean explicitIndex = true;
 		int nestedGrammars = 0;
 		if (arendelle.code.charAt(arendelle.i + 1) == '[') {
 			for (int i = arendelle.i + 2; !(arendelle.code.charAt(i) == ']' && nestedGrammars == 0); i++) {
@@ -135,6 +137,7 @@ public class StoredSpaces {
 			index = String.valueOf(new Expression(Replacer.replace(index, screen, spaces)).eval().intValue());
 			arendelle.i++;
 		} else {
+			explicitIndex = false;
 			index = "0";
 		}
 		
@@ -183,12 +186,12 @@ public class StoredSpaces {
 			new File(storedSpacePath).delete();
 			return;
 			
-		} else if(expression.charAt(0) == '@' && spaces.containsKey(expression.substring(1))) {
+		} else if(!explicitIndex && expression.charAt(0) == '@' && spaces.containsKey(expression.substring(1))) {
 			
 			// create stored space array from a space array
 			array.putAll(Arrays.getArray(spaces.get(expression.substring(1))));
 			
-		} else if(expression.charAt(0) == '$' && new File(screen.mainPath + "/" + expression.substring(1).replace('.', '/') + ".space").exists()) {
+		} else if(!explicitIndex && expression.charAt(0) == '$' && new File(screen.mainPath + "/" + expression.substring(1).replace('.', '/') + ".space").exists()) {
 			
 			// try to create stored space array from another stored space array
 			try {
@@ -230,8 +233,8 @@ public class StoredSpaces {
 		
 		// save stored space
 		try {
-            File storedSpace = new File(storedSpacePath);
-            storedSpace.getParentFile().mkdirs();
+			File storedSpace = new File(storedSpacePath);
+			storedSpace.getParentFile().mkdirs();
 			Files.write(storedSpace, Arrays.getRawSpace(array));
 		} catch (Exception e) {
 			Reporter.report(e.toString(), arendelle.line);

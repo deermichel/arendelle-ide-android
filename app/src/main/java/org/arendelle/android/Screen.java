@@ -162,6 +162,9 @@ public class Screen extends ActionBarActivity {
         // set color palette
         viewResult.setColorPalette(colorPalette);
 
+        // set title
+        setTitle(projectFolder.getName());
+
     }
 
 	@Override
@@ -189,6 +192,7 @@ public class Screen extends ActionBarActivity {
 
 		// reset screen and thread
 		screen = new CodeScreen(gridWidth, gridHeight, projectFolder.getAbsolutePath(), false);
+        screen.title = projectFolder.getName();
 		textChronometer.setText("");
 		compilerThread = new CompilerThread();
 		

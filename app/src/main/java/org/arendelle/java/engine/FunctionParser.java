@@ -45,7 +45,7 @@ public class FunctionParser {
 		
 		// setup temporarely spaces and the 'return' space
 		HashMap<String, String> functionSpaces = new HashMap<String, String>();
-		functionSpaces.put("return", "0,0");
+		functionSpaces.put("return", "0");
 		
 		// get given parameters
 		String parameters = "";
