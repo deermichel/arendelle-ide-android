@@ -122,7 +122,7 @@ public class MasterEvaluator {
 						Reporter.report("Syntax error, insert ''' to complete statement.", -1);
 						break;
 					}
-				} while (!(code.charAt(i) == '\'' && code.charAt(i - 1) != '\\'));
+				} while (!(code.charAt(i) == '\''));
 			}
 			
 			// exclude strings

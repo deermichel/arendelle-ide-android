@@ -120,6 +120,7 @@ public class FunctionParser {
 			} else {
 				parameter = String.valueOf(new Expression(Replacer.replace(functionParameters[i], screen, spaces)).eval().intValue());
 			}
+			
 			functionSpaces.put(functionExpectedParameters[i], parameter);
 		}
 		

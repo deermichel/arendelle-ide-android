@@ -65,18 +65,30 @@ public class Spaces {
 						}
 					}
 					index = String.valueOf(new Expression(Replacer.replace(index, screen, spaces)).eval().intValue());
-					expressionWithoutSpaces += Arrays.getArray(spaces.get(name)).get(index);
+					if (spaces.containsKey(name)) {
+						expressionWithoutSpaces += Arrays.getArray(spaces.get(name)).get(index);
+					} else {
+						expressionWithoutSpaces += "@" + name;
+					}
 					i++;
 				}
 				
 				// or count items
 				else if (i < expression.length() && expression.charAt(i) == '?') {
-					expressionWithoutSpaces += String.valueOf(Arrays.getArray(spaces.get(name)).size());
+					if (spaces.containsKey(name)) {
+						expressionWithoutSpaces += String.valueOf(Arrays.getArray(spaces.get(name)).size());
+					} else {
+						expressionWithoutSpaces += "@" + name;
+					}
 				}
 				
 				// or return index = 0
 				else {
-					expressionWithoutSpaces += Arrays.getArray(spaces.get(name)).get("0");
+					if (spaces.containsKey(name)) {
+						expressionWithoutSpaces += Arrays.getArray(spaces.get(name)).get("0");
+					} else {
+						expressionWithoutSpaces += "@" + name;
+					}
 					i--;
 				}
 				
@@ -150,6 +162,12 @@ public class Spaces {
 		
 		arendelle.i++;
 		
+		// abort if user wants to create the return space (!)
+		if (name.equals("return") && !spaces.containsKey("return")) {
+			Reporter.report("Using @return in the main function is forbidden.", arendelle.line);
+			return;
+		}
+		
 		// determine action
 		if (expression == "") {
 			
@@ -161,10 +179,14 @@ public class Spaces {
 			
 		} else if (expression.equals("done")) {
 			
-			// remove space
-			spaces.remove(name);
+			// remove any space except of return (!)
+			if (!name.equals("return")) {
+				spaces.remove(name);
+			} else {
+				Reporter.report("The @return space cannot be deleted.", arendelle.line);
+			}
 			
-		} else if(!explicitIndex && expression.charAt(0) == '@' && spaces.containsKey(expression.substring(1))) {
+		} else if (!explicitIndex && expression.charAt(0) == '@' && spaces.containsKey(expression.substring(1))) {
 			
 			// create space array from another space array
 			HashMap<String, String> array = Arrays.getArray(name);
@@ -193,7 +215,7 @@ public class Spaces {
 					Reporter.report("Not running in Interactive Mode!", arendelle.line);
 					return;
 				}
-
+				
 				break;
 				
 			case '+':

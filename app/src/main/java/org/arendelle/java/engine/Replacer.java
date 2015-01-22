@@ -150,4 +150,46 @@ public class Replacer {
 		return expressionWithoutErrors;
 	}
 	
+	/** replaces all placeholders in the given string with their values
+	 * @param string
+	 * @param screen
+	 * @param spaces
+	 * @return The final title
+	 */
+	public static String replaceInString(String string, CodeScreen screen, HashMap<String, String> spaces) {
+
+		// copy whole code without placeholders
+		String expressionWithoutPlaceholders = "";
+		for (int i = 0; i < string.length(); i++) {
+			
+			if (string.charAt(i) == '\\' && i < string.length() - 2 && string.charAt(i + 1) == '(') {
+				
+				// get placeholder
+				String placeholder = "";
+				int nestedGrammars = 0;
+				for (int j = i + 2; !(string.charAt(j) == ')' && nestedGrammars == 0); j++) {
+					placeholder += string.charAt(j);
+					i = j;
+					
+					if (string.charAt(j) == '[' || string.charAt(j) == '(' || string.charAt(j) == '{') {
+						nestedGrammars++;
+					} else if (string.charAt(j) == ']' || string.charAt(j) == ')' || string.charAt(j) == '}') {
+						nestedGrammars--;
+					}
+					
+				}
+				i++;
+				
+				// evaluate placeholder
+				expressionWithoutPlaceholders += String.valueOf(new Expression(Replacer.replace(placeholder, screen, spaces)).eval().intValue());
+				
+			} else {
+				expressionWithoutPlaceholders += string.charAt(i);
+			}
+			
+		}
+		
+		return expressionWithoutPlaceholders;
+	}
+	
 }

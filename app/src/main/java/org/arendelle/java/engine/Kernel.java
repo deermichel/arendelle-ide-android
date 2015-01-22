@@ -74,12 +74,11 @@ public class Kernel {
 			case '\'':
 				// get and set screen title
 				String title = "";
-				for (int i = arendelle.i + 1; !(arendelle.code.charAt(i) == '\'' && arendelle.code.charAt(i - 1) != '\\'); i++) {
-					if (arendelle.code.charAt(i) == '\\') continue;
+				for (int i = arendelle.i + 1; !(arendelle.code.charAt(i) == '\''); i++) {
 					title += arendelle.code.charAt(i);
 					arendelle.i = i;
 				}
-				screen.title = Replacer.replace(title, screen, spaces);
+				screen.title = Replacer.replaceInString(title, screen, spaces);
 				arendelle.i++;
 				break;
 			
