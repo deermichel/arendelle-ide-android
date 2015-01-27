@@ -1,5 +1,6 @@
 package org.arendelle.android;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 
 import java.io.BufferedReader;
@@ -7,6 +8,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -97,6 +99,22 @@ public class Files {
 
         if (file.isDirectory()) for (File child : file.listFiles()) delete(child);
         file.delete();
+
+    }
+
+    /** copies a file from raw folder to internal memory */
+    public static void copyFromRawToPath(Activity context, int id, File path) throws IOException {
+
+        InputStream in = context.getResources().openRawResource(id);
+        FileOutputStream out = new FileOutputStream(path);
+        byte buffer[] = new byte[1024];
+        int read = 0;
+        try {
+            while ((read = in.read(buffer)) > 0) out.write(buffer, 0, read);
+        } finally {
+            in.close();
+            out.close();
+        }
 
     }
 	

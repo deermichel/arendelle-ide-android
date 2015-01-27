@@ -1,0 +1,52 @@
+
+// Standard screen port of 10print
+
+//
+// Copyright 2014 Pouya Kary
+// This sketch is a representation
+// of the 10PRINT software explained
+// on www.10print.org
+//
+
+// the original software is a one-line
+// code in BASIC:
+// 10 PRINT CHR$ (208.5 + RND (1)); : GOTO 10
+
+// line counter
+   (line, 0)
+
+// Body
+
+   // doing for all lines
+      [#j / 3 + 1,
+
+      // going to the target line
+         i [@line * 3, d]
+
+      // going to the target square of the line
+         [#i / 3 + 1,
+
+         // checking if we are writing slash
+         // or a back slash
+            {#rnd > 0.5,
+
+                dd [3, pru] d     // slash
+            ,
+                [3, prd] [3, u]   // back-slash
+
+            }
+
+         // going to the next color
+            nn
+         ]
+
+      // going to the next line
+         (line, +1)
+
+      // color fixer
+       // {(#i / 3 + 1) % 2 = 0, nn}
+
+	nnn
+      ]
+
+// done

@@ -3,7 +3,6 @@
 
     <!-- General -->
     <string name="app_name">Arendelle</string>
-    <string name="app_version">1.0</string>
     <string name="button_ok">OK</string>
     <string name="button_cancel">Cancel</string>
     <string name="dialog_rename_title">Rename</string>
@@ -15,7 +14,9 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_new">New</string>
     <string name="action_basics">Basics</string>
+    <string name="action_learn">Learn Arendelle</string>
     <string name="action_help">Help</string>
+    <string name="action_settings">Settings</string>
     <string name="action_rate">Rate Me</string>
     <string name="action_contact">Report Bug</string>
     <string name="action_about">About</string>
@@ -80,6 +81,9 @@
         <item>Simple Red</item>
         <item>White Legacy</item>
     </string-array>
+
+    <!-- App settings activity -->
+    <string name="app_settings_title">App settings</string>
 
     <!-- JArendelle core -->
     <string name="dialog_input_title">Input</string>

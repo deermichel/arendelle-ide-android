@@ -37,6 +37,10 @@
             android:name=".Webview">
         </activity>
 
+        <activity
+            android:name=".AppSettings">
+        </activity>
+
     </application>
 
 </manifest>

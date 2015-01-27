@@ -26,19 +26,19 @@ public class Sources {
 	 * @return The final expression
 	 */
 	public static String replace(String expression, CodeScreen screen) {
-		
+
+		expression = expression.replaceAll("#depth", String.valueOf(screen.depth));
+		expression = expression.replaceAll("#height", String.valueOf(screen.height));
+		expression = expression.replaceAll("#width", String.valueOf(screen.width));
+		expression = expression.replaceAll("#rnd", Sources.RNDGenerator(screen));
+		expression = expression.replaceAll("#pi", String.valueOf(Math.PI));
+		expression = expression.replaceAll("#i", String.valueOf(screen.width));
+		expression = expression.replaceAll("#j", String.valueOf(screen.height));
+		expression = expression.replaceAll("#k", String.valueOf(screen.z));
+		expression = expression.replaceAll("#n", String.valueOf(screen.color));
 		expression = expression.replaceAll("#x", String.valueOf(screen.x));
 		expression = expression.replaceAll("#y", String.valueOf(screen.y));
 		expression = expression.replaceAll("#z", String.valueOf(screen.z));
-		expression = expression.replaceAll("#pi", String.valueOf(Math.PI));
-		expression = expression.replaceAll("#i", String.valueOf(screen.width));
-		expression = expression.replaceAll("#width", String.valueOf(screen.width));
-		expression = expression.replaceAll("#j", String.valueOf(screen.height));
-		expression = expression.replaceAll("#height", String.valueOf(screen.height));
-		expression = expression.replaceAll("#k", String.valueOf(screen.z));
-		expression = expression.replaceAll("#depth", String.valueOf(screen.depth));
-		expression = expression.replaceAll("#n", String.valueOf(screen.color));
-		expression = expression.replaceAll("#rnd", Sources.RNDGenerator(screen));
 		
 		return expression;
 	}

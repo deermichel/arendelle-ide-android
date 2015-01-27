@@ -78,8 +78,8 @@ public class LoopParser {
 		expression = expression.replaceAll("floor", "floo_r");
 		
 		// determine if expression is a number (for-loop) or a boolean (while-loop)
-		if (expression.contains("=") || expression.contains("<") || expression.contains(">") || expression.contains("true") || 
-				expression.contains("false") || expression.contains("and") || expression.contains("or") || expression.contains("not")) {
+		if (expression.contains("=") || expression.contains("<") || expression.contains(">") 
+				|| expression.contains("and") || expression.contains("or") || expression.contains("not")) {
 			
 			// run the while loop
 			long timestamp = System.currentTimeMillis();

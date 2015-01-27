@@ -778,9 +778,6 @@ public class Expression {
 			}
 		});
 
-		variables.put("true", BigDecimal.ONE);
-		variables.put("false", BigDecimal.ZERO);
-
 	}
 
 	/**

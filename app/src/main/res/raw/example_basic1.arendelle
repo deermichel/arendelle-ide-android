@@ -1,0 +1,116 @@
+
+//
+//     W  E  L  C  O  M  E 
+//
+// This is a source code! Like
+// what you see in movies with
+// green colors and scary looks
+// but codes are pretty and fun.
+// You can create so many great
+// things with them! Look at
+// everything around you. All
+// of them are somehow related
+// to a software!
+//
+// Arendelle Language is a new
+// simple langauge that shows
+// you how to think like coders
+// while you make cool drawings
+// like the text you see here
+// "BASIC 1" which was written
+// by Arendelle!
+//
+// If you have our book you
+// no longer need to read this
+//
+
+
+
+//
+//         M  O  R  E    
+//         T  H  A  N 
+//         F  I  V  E
+//
+// You should know about five
+// commands you saw in the
+// opening of this app. They
+// were 'r', 'd', 'l', 'u' and
+// 'p'. You could use them to
+// write :
+//
+//             █
+//              █
+//            ███
+//
+// Now imagine you're willing
+// to write this:
+//
+//       █ █ █ █ █ █ █ █
+//
+// How you can code it? You may
+// write:
+//
+//       prr prr prr prr
+//       prr prr prr prr
+//
+// Right? So you see you have
+// repeated 'prr' for 8 times
+// and you may agree with me if
+// there was a way to repeat an
+// action, We could do this so
+// much faster and easier, So
+// yes sure, We have something
+// that helps you do this, It's
+// called a loop! It has a rule
+// like this:
+//
+//      [ number , code ]
+//
+// What you do is simple. You
+// write how much you want it
+// to repeat as number and the
+// code is obvious. So in our
+// case we must write the code:
+//
+//         [ 8 , prr ]
+//
+// So now imagine we want to
+// write this:
+//
+//            █
+//             █
+//              █
+//               █
+//
+// So you may code it like:
+//
+//        prd prd prd prd 
+//
+// But you also know now that
+// you can code it like this:
+// 
+//         [ 4 , prd ]
+//
+// You see you just learned
+// your first real programming
+// thing!
+//
+// The lines starting with //
+// are called comment and they
+// wont run. However a line
+// without it will be run so if
+// you push the run button
+// right now you will see this
+// code running:
+//
+
+     [ 4 , prd ] [ 5 , pru ]
+
+//
+// Can you imagine what it
+// will be before you start it?
+//
+
+
+
+

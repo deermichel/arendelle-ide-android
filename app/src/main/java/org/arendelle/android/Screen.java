@@ -4,6 +4,7 @@ import org.arendelle.java.engine.CodeScreen;
 import org.arendelle.java.engine.MasterEvaluator;
 import org.arendelle.java.engine.Reporter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -208,44 +209,8 @@ public class Screen extends ActionBarActivity {
 		setTitle(screen.title);
 
         try {
-            Bitmap bitmap = Bitmap.createBitmap(getResources().getDisplayMetrics().widthPixels, cellHeight * 5, Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-
-
-            float brightness = -100;
-            float contrast = 1;
-            ColorMatrix colorMatrix = new ColorMatrix(new float[] {
-                    contrast, 0, 0, 0, brightness,
-                    0, contrast, 0, 0, brightness,
-                    0, 0, contrast, 0, brightness,
-                    0, 0, 0, 1, 0 });
-
-            Paint paint = new Paint();
-            paint.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
-
-            for (int x = 0; x < screen.width; x++) for (int y = 0; y < 5; y++) {
-                switch (screen.screen[x][y]) {
-                    case 0:
-                        paint.setColor(getResources().getColor(R.color.arendelleClassicBackground));
-                        break;
-                    case 1:
-                        paint.setColor(getResources().getColor(R.color.arendelleClassicFirst));
-                        break;
-                    case 2:
-                        paint.setColor(getResources().getColor(R.color.arendelleClassicSecond));
-                        break;
-                    case 3:
-                        paint.setColor(getResources().getColor(R.color.arendelleClassicThird));
-                        break;
-                    case 4:
-                        paint.setColor(getResources().getColor(R.color.arendelleClassicFourth));
-                        break;
-                }
-                canvas.drawRect(x * Screen.cellWidth, y * Screen.cellHeight, x * Screen.cellWidth + Screen.cellWidth, y * Screen.cellHeight + Screen.cellHeight, paint);
-            }
-
             File file = new File(projectFolder, ".preview.png");
-            Files.saveImage(file, bitmap);
+            Files.saveImage(file, Screen.createPreviewImage(this, screen, Screen.cellWidth, Screen.cellHeight));
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -333,6 +298,49 @@ public class Screen extends ActionBarActivity {
         // start share intent
         startActivity(Intent.createChooser(shareIntent, getText(R.string.share_chooser_title)));
 
+    }
+
+    /** creates a preview image */
+    public static Bitmap createPreviewImage(Activity context, CodeScreen screen, int cellHeight, int cellWidth) {
+
+        Bitmap bitmap = Bitmap.createBitmap(context.getResources().getDisplayMetrics().widthPixels, cellHeight * 5, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+
+        // adjust filter
+        float brightness = -100;
+        float contrast = 1;
+        ColorMatrix colorMatrix = new ColorMatrix(new float[] {
+                contrast, 0, 0, 0, brightness,
+                0, contrast, 0, 0, brightness,
+                0, 0, contrast, 0, brightness,
+                0, 0, 0, 1, 0 });
+
+        Paint paint = new Paint();
+        paint.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+
+        // draw
+        for (int x = 0; x < screen.width; x++) for (int y = 0; y < 5; y++) {
+            switch (screen.screen[x][y]) {
+                case 0:
+                    paint.setColor(context.getResources().getColor(R.color.arendelleClassicBackground));
+                    break;
+                case 1:
+                    paint.setColor(context.getResources().getColor(R.color.arendelleClassicFirst));
+                    break;
+                case 2:
+                    paint.setColor(context.getResources().getColor(R.color.arendelleClassicSecond));
+                    break;
+                case 3:
+                    paint.setColor(context.getResources().getColor(R.color.arendelleClassicThird));
+                    break;
+                case 4:
+                    paint.setColor(context.getResources().getColor(R.color.arendelleClassicFourth));
+                    break;
+            }
+            canvas.drawRect(x * cellWidth, y * cellHeight, x * cellWidth + cellWidth, y * cellHeight + cellHeight, paint);
+        }
+
+        return bitmap;
     }
 
 }
