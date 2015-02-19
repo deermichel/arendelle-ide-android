@@ -134,47 +134,47 @@ public class Settings extends ActionBarActivity {
 
                 // Arendelle Classic
                 case 0:
-                    properties.put("colorBackground", String.valueOf(getResources().getColor(R.color.arendelleClassicBackground)));
-                    properties.put("colorFirst", String.valueOf(getResources().getColor(R.color.arendelleClassicFirst)));
-                    properties.put("colorSecond", String.valueOf(getResources().getColor(R.color.arendelleClassicSecond)));
-                    properties.put("colorThird", String.valueOf(getResources().getColor(R.color.arendelleClassicThird)));
-                    properties.put("colorFourth", String.valueOf(getResources().getColor(R.color.arendelleClassicFourth)));
+                    properties.put("colorBackground", "#000000");
+                    properties.put("colorFirst", "#FFFFFF");
+                    properties.put("colorSecond", "#CECECE");
+                    properties.put("colorThird", "#8C8A8C");
+                    properties.put("colorFourth", "#424542");
                     break;
 
                 // Sparkling Blue
                 case 1:
-                    properties.put("colorBackground", String.valueOf(getResources().getColor(R.color.sparklingBlueBackground)));
-                    properties.put("colorFirst", String.valueOf(getResources().getColor(R.color.sparklingBlueFirst)));
-                    properties.put("colorSecond", String.valueOf(getResources().getColor(R.color.sparklingBlueSecond)));
-                    properties.put("colorThird", String.valueOf(getResources().getColor(R.color.sparklingBlueThird)));
-                    properties.put("colorFourth", String.valueOf(getResources().getColor(R.color.sparklingBlueFourth)));
+                    properties.put("colorBackground", "#000000");
+                    properties.put("colorFirst", "#49CEE6");
+                    properties.put("colorSecond", "#49B3E6");
+                    properties.put("colorThird", "#499EE6");
+                    properties.put("colorFourth", "#4985E6");
                     break;
 
                 // Arendelle Pink
                 case 2:
-                    properties.put("colorBackground", String.valueOf(getResources().getColor(R.color.arendellePinkBackground)));
-                    properties.put("colorFirst", String.valueOf(getResources().getColor(R.color.arendellePinkFirst)));
-                    properties.put("colorSecond", String.valueOf(getResources().getColor(R.color.arendellePinkSecond)));
-                    properties.put("colorThird", String.valueOf(getResources().getColor(R.color.arendellePinkThird)));
-                    properties.put("colorFourth", String.valueOf(getResources().getColor(R.color.arendellePinkFourth)));
+                    properties.put("colorBackground", "#000000");
+                    properties.put("colorFirst", "#E60087");
+                    properties.put("colorSecond", "#B800AD");
+                    properties.put("colorThird", "#8E00D7");
+                    properties.put("colorFourth", "#6600FF");
                     break;
 
                 // Simple Red
                 case 3:
-                    properties.put("colorBackground", String.valueOf(getResources().getColor(R.color.simpleRedBackground)));
-                    properties.put("colorFirst", String.valueOf(getResources().getColor(R.color.simpleRedFirst)));
-                    properties.put("colorSecond", String.valueOf(getResources().getColor(R.color.simpleRedSecond)));
-                    properties.put("colorThird", String.valueOf(getResources().getColor(R.color.simpleRedThird)));
-                    properties.put("colorFourth", String.valueOf(getResources().getColor(R.color.simpleRedFourth)));
+                    properties.put("colorBackground", "#FFFFFF");
+                    properties.put("colorFirst", "#E70D20");
+                    properties.put("colorSecond", "#EC444B");
+                    properties.put("colorThird", "#F17E81");
+                    properties.put("colorFourth", "#F7BBBE");
                     break;
 
                 // White Legacy
                 case 4:
-                    properties.put("colorBackground", String.valueOf(getResources().getColor(R.color.whiteLegacyBackground)));
-                    properties.put("colorFirst", String.valueOf(getResources().getColor(R.color.whiteLegacyFirst)));
-                    properties.put("colorSecond", String.valueOf(getResources().getColor(R.color.whiteLegacySecond)));
-                    properties.put("colorThird", String.valueOf(getResources().getColor(R.color.whiteLegacyThird)));
-                    properties.put("colorFourth", String.valueOf(getResources().getColor(R.color.whiteLegacyFourth)));
+                    properties.put("colorBackground", "#EAEAEA");
+                    properties.put("colorFirst", "#030303");
+                    properties.put("colorSecond", "#313131");
+                    properties.put("colorThird", "#6D6D6D");
+                    properties.put("colorFourth", "#B3B3B3");
                     break;
 
             }

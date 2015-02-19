@@ -212,6 +212,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/key_string_sign" />
+
+                <Button
+                    android:id="@+id/key_string_interpolation_sign"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_string_interpolation_sign" />
                 
             </LinearLayout>
         </HorizontalScrollView>

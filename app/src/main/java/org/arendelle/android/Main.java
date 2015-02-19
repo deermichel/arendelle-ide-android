@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -202,8 +203,11 @@ public class Main extends ActionBarActivity implements OnItemClickListener, Adap
                 if (((EditText) dialogView.findViewById(R.id.dialog_new_project_text_name)).getText().toString().equals("")) {
                     Toast.makeText(Main.this, R.string.toast_enter_name_for_project, Toast.LENGTH_LONG).show();
                     showNewProjectDialog();
-                } else if(((EditText) dialogView.findViewById(R.id.dialog_new_project_text_main_function_name)).getText().toString().equals("")) {
+                } else if (((EditText) dialogView.findViewById(R.id.dialog_new_project_text_main_function_name)).getText().toString().equals("")) {
                     Toast.makeText(Main.this, R.string.toast_enter_name_for_main_function, Toast.LENGTH_LONG).show();
+                    showNewProjectDialog();
+                } else if (((EditText) dialogView.findViewById(R.id.dialog_new_project_text_main_function_name)).getText().toString().contains(".")) {
+                    Toast.makeText(Main.this, R.string.toast_main_function_in_folder, Toast.LENGTH_LONG).show();
                     showNewProjectDialog();
                 } else {
                     newProject(((EditText) dialogView.findViewById(R.id.dialog_new_project_text_name)).getText().toString(),
@@ -234,12 +238,17 @@ public class Main extends ActionBarActivity implements OnItemClickListener, Adap
 		HashMap<String, String> properties = new HashMap<String, String>();
 		properties.put("mainFunction", mainFunctionName + ".arendelle");
 		properties.put("currentFunction", properties.get("mainFunction"));
+        try {
+            properties.put("ide", "android;" + String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionCode));
+        } catch (Exception e) {
+            properties.put("ide", "android;0");
+        }
         properties.put("colorPalette", "0");
-        properties.put("colorBackground", String.valueOf(getResources().getColor(R.color.arendelleClassicBackground)));
-        properties.put("colorFirst", String.valueOf(getResources().getColor(R.color.arendelleClassicFirst)));
-        properties.put("colorSecond", String.valueOf(getResources().getColor(R.color.arendelleClassicSecond)));
-        properties.put("colorThird", String.valueOf(getResources().getColor(R.color.arendelleClassicThird)));
-        properties.put("colorFourth", String.valueOf(getResources().getColor(R.color.arendelleClassicFourth)));
+        properties.put("colorBackground", "#000000");
+        properties.put("colorFirst", "#FFFFFF");
+        properties.put("colorSecond", "#CECECE");
+        properties.put("colorThird", "#8C8A8C");
+        properties.put("colorFourth", "#424542");
 		try {
 			Files.createConfigFile(configFile, properties);
 		} catch (Exception e) {
@@ -422,24 +431,29 @@ public class Main extends ActionBarActivity implements OnItemClickListener, Adap
             properties.put("mainFunction", (String)example[1]);
             properties.put("currentFunction", properties.get("mainFunction"));
             properties.put("colorPalette", (String)example[3]);
+            try {
+                properties.put("ide", "android;" + String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionCode));
+            } catch (Exception e) {
+                properties.put("ide", "android;0");
+            }
             switch (Integer.valueOf(properties.get("colorPalette"))) {
 
                 // Arendelle Classic
                 case 0:
-                    properties.put("colorBackground", String.valueOf(getResources().getColor(R.color.arendelleClassicBackground)));
-                    properties.put("colorFirst", String.valueOf(getResources().getColor(R.color.arendelleClassicFirst)));
-                    properties.put("colorSecond", String.valueOf(getResources().getColor(R.color.arendelleClassicSecond)));
-                    properties.put("colorThird", String.valueOf(getResources().getColor(R.color.arendelleClassicThird)));
-                    properties.put("colorFourth", String.valueOf(getResources().getColor(R.color.arendelleClassicFourth)));
+                    properties.put("colorBackground", "#000000");
+                    properties.put("colorFirst", "#FFFFFF");
+                    properties.put("colorSecond", "#CECECE");
+                    properties.put("colorThird", "#8C8A8C");
+                    properties.put("colorFourth", "#424542");
                     break;
 
                 // Arendelle Pink
                 case 2:
-                    properties.put("colorBackground", String.valueOf(getResources().getColor(R.color.arendellePinkBackground)));
-                    properties.put("colorFirst", String.valueOf(getResources().getColor(R.color.arendellePinkFirst)));
-                    properties.put("colorSecond", String.valueOf(getResources().getColor(R.color.arendellePinkSecond)));
-                    properties.put("colorThird", String.valueOf(getResources().getColor(R.color.arendellePinkThird)));
-                    properties.put("colorFourth", String.valueOf(getResources().getColor(R.color.arendellePinkFourth)));
+                    properties.put("colorBackground", "#000000");
+                    properties.put("colorFirst", "#E60087");
+                    properties.put("colorSecond", "#B800AD");
+                    properties.put("colorThird", "#8E00D7");
+                    properties.put("colorFourth", "#6600FF");
                     break;
 
             }

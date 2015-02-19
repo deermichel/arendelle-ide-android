@@ -66,7 +66,14 @@ public class FunctionParser {
 		
 		// convert parameters in an array
 		String[] functionParameters = parameters.split(",");
-		if (functionParameters[0] == "") functionParameters = new String[0];
+		if (functionParameters[0] == "") {
+			functionParameters = new String[0];
+		} else {
+			for (int i = 0; i < functionParameters.length; i++) {
+				String[] temp = functionParameters[i].split(":");
+				functionParameters[i] = temp[temp.length - 1];
+			}
+		}
 		
 		// get function path
 		String functionPath = screen.mainPath + "/" + functionName.replace('.', '/') + ".arendelle";
@@ -118,7 +125,7 @@ public class FunctionParser {
 				}
 				
 			} else {
-				parameter = String.valueOf(new Expression(Replacer.replace(functionParameters[i], screen, spaces)).eval().intValue());
+				parameter = new Expression(Replacer.replace(functionParameters[i], screen, spaces)).eval().toPlainString();
 			}
 			
 			functionSpaces.put(functionExpectedParameters[i], parameter);

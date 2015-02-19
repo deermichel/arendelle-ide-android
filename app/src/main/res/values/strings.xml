@@ -23,6 +23,7 @@
     <string name="toast_storage_not_accessible">Storage not accessible</string>
     <string name="toast_enter_name_for_project">Please enter a name for the project</string>
     <string name="toast_enter_name_for_main_function">Please enter a name for the main function which is the entry point of your project</string>
+    <string name="toast_main_function_in_folder">The main function has to be in the main folder. Please remove the dots to proceed.</string>
     <string name="dialog_new_project_title">New project</string>
     <string name="dialog_new_project_name">Name</string>
     <string name="dialog_new_project_main_function_name">Name of main function</string>
@@ -30,6 +31,7 @@
     <!-- Editor activity -->
     <string name="action_run">Run</string>
     <string name="toast_you_cannot_delete_main_function">You cannot delete the main function!</string>
+    <string name="toast_downgrade_warning">This project was edited with a newer IDE than the current. We recommend you to update this app to prevent errors.</string>
     <string name="dialog_new_function_title">New function</string>
     <string name="dialog_new_function_name">Name</string>
     <string-array name="dialog_file_options">
@@ -62,6 +64,7 @@
     <string name="key_function_header_close">&gt;</string>
     <string name="key_title_sign">\'</string>
     <string name="key_string_sign">\"</string>
+    <string name="key_string_interpolation_sign">\\</string>
 
     <!-- Screen activity -->
     <string name="action_stop">Stop</string>

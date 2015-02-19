@@ -6,39 +6,4 @@
     <color name="colorPrimaryDark">#9013FE</color>
     <color name="colorAccent">#EE00A4</color>
 
-    <!-- Arendelle Classic palette -->
-    <color name="arendelleClassicBackground">#000000</color>
-    <color name="arendelleClassicFirst">#FFFFFF</color>
-    <color name="arendelleClassicSecond">#CECECE</color>
-    <color name="arendelleClassicThird">#8C8A8C</color>
-    <color name="arendelleClassicFourth">#424542</color>
-
-    <!-- Sparkling Blue palette -->
-    <color name="sparklingBlueBackground">#000000</color>
-    <color name="sparklingBlueFirst">#49CEE6</color>
-    <color name="sparklingBlueSecond">#49B3E6</color>
-    <color name="sparklingBlueThird">#499EE6</color>
-    <color name="sparklingBlueFourth">#4985E6</color>
-
-    <!-- Arendelle Pink palette -->
-    <color name="arendellePinkBackground">#000000</color>
-    <color name="arendellePinkFirst">#E60087</color>
-    <color name="arendellePinkSecond">#B800AD</color>
-    <color name="arendellePinkThird">#8E00D7</color>
-    <color name="arendellePinkFourth">#6600FF</color>
-
-    <!-- Simple Red palette -->
-    <color name="simpleRedBackground">#FFFFFF</color>
-    <color name="simpleRedFirst">#E70D20</color>
-    <color name="simpleRedSecond">#EC444B</color>
-    <color name="simpleRedThird">#F17E81</color>
-    <color name="simpleRedFourth">#F7BBBE</color>
-
-    <!-- White Legacy palette -->
-    <color name="whiteLegacyBackground">#EAEAEA</color>
-    <color name="whiteLegacyFirst">#030303</color>
-    <color name="whiteLegacySecond">#313131</color>
-    <color name="whiteLegacyThird">#6D6D6D</color>
-    <color name="whiteLegacyFourth">#B3B3B3</color>
-
 </resources>

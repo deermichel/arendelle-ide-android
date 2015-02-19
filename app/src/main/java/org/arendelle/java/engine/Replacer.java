@@ -164,11 +164,11 @@ public class Replacer {
 			
 			if (string.charAt(i) == '\\' && i < string.length() - 2 && string.charAt(i + 1) == '(') {
 				
-				// get placeholder
+				// get placeholder without spaces
 				String placeholder = "";
 				int nestedGrammars = 0;
 				for (int j = i + 2; !(string.charAt(j) == ')' && nestedGrammars == 0); j++) {
-					placeholder += string.charAt(j);
+					if (string.charAt(j) != ' ') placeholder += string.charAt(j);
 					i = j;
 					
 					if (string.charAt(j) == '[' || string.charAt(j) == '(' || string.charAt(j) == '{') {
@@ -181,7 +181,7 @@ public class Replacer {
 				i++;
 				
 				// evaluate placeholder
-				expressionWithoutPlaceholders += String.valueOf(new Expression(Replacer.replace(placeholder, screen, spaces)).eval().intValue());
+				expressionWithoutPlaceholders += new Expression(Replacer.replace(placeholder, screen, spaces)).eval().toPlainString();
 				
 			} else {
 				expressionWithoutPlaceholders += string.charAt(i);

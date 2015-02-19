@@ -38,7 +38,7 @@ public class MasterEvaluator {
 		
 		// setting up the spaces
 		HashMap<String, String> spaces = new HashMap<String, String>();
-		
+
 		// reset errors
 		Reporter.errors = "";
 		
@@ -113,7 +113,7 @@ public class MasterEvaluator {
 		// copy whole code without spaces
 		for (int i = 0; i < code.length(); i++) {
 			
-			// exclude window titles
+			// exclude strings (' type)
 			if (code.charAt(i) == '\'') {
 				do {
 					codeWithoutSpaces += code.charAt(i);
@@ -125,7 +125,7 @@ public class MasterEvaluator {
 				} while (!(code.charAt(i) == '\''));
 			}
 			
-			// exclude strings
+			// exclude strings (" type)
 			if (code.charAt(i) == '\"') {
 				do {
 					codeWithoutSpaces += code.charAt(i);

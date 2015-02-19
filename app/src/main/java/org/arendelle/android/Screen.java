@@ -150,11 +150,11 @@ public class Screen extends ActionBarActivity {
         // get color palette
         try {
             HashMap<String, String> properties = Files.parseConfigFile(configFile);
-            colorPalette[0] = Integer.valueOf(properties.get("colorBackground"));
-            colorPalette[1] = Integer.valueOf(properties.get("colorFirst"));
-            colorPalette[2] = Integer.valueOf(properties.get("colorSecond"));
-            colorPalette[3] = Integer.valueOf(properties.get("colorThird"));
-            colorPalette[4] = Integer.valueOf(properties.get("colorFourth"));
+            colorPalette[0] = Color.parseColor(properties.get("colorBackground"));
+            colorPalette[1] = Color.parseColor(properties.get("colorFirst"));
+            colorPalette[2] = Color.parseColor(properties.get("colorSecond"));
+            colorPalette[3] = Color.parseColor(properties.get("colorThird"));
+            colorPalette[4] = Color.parseColor(properties.get("colorFourth"));
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
             finish();
@@ -322,19 +322,19 @@ public class Screen extends ActionBarActivity {
         for (int x = 0; x < screen.width; x++) for (int y = 0; y < 5; y++) {
             switch (screen.screen[x][y]) {
                 case 0:
-                    paint.setColor(context.getResources().getColor(R.color.arendelleClassicBackground));
+                    paint.setColor(Color.parseColor("#000000"));
                     break;
                 case 1:
-                    paint.setColor(context.getResources().getColor(R.color.arendelleClassicFirst));
+                    paint.setColor(Color.parseColor("#FFFFFF"));
                     break;
                 case 2:
-                    paint.setColor(context.getResources().getColor(R.color.arendelleClassicSecond));
+                    paint.setColor(Color.parseColor("#CECECE"));
                     break;
                 case 3:
-                    paint.setColor(context.getResources().getColor(R.color.arendelleClassicThird));
+                    paint.setColor(Color.parseColor("#8C8A8C"));
                     break;
                 case 4:
-                    paint.setColor(context.getResources().getColor(R.color.arendelleClassicFourth));
+                    paint.setColor(Color.parseColor("#424542"));
                     break;
             }
             canvas.drawRect(x * cellWidth, y * cellHeight, x * cellWidth + cellWidth, y * cellHeight + cellHeight, paint);

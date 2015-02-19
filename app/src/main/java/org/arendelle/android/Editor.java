@@ -72,9 +72,10 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 		keyPowSign,
 		keyModuloSign, 
 		keyFunctionHeaderOpen, 
-		keyFunctionHeaderClose, 
-		keyTitleSign, 
-		keyStringSign;
+		keyFunctionHeaderClose,
+        keyTitleSign,
+		keyStringSign,
+        keyStringInterpolationSign;
 	
 	/** project folder */
 	private File projectFolder;
@@ -129,6 +130,7 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 		keyFunctionHeaderClose = (Button) findViewById(R.id.key_function_header_close);
 		keyTitleSign = (Button) findViewById(R.id.key_title_sign);
 		keyStringSign = (Button) findViewById(R.id.key_string_sign);
+        keyStringInterpolationSign = (Button) findViewById(R.id.key_string_interpolation_sign);
 		
 		// activate left drawer toggle in action bar
 		actionBarLeftDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
@@ -189,25 +191,41 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 		keyFunctionHeaderClose.setOnClickListener(this);
 		keyTitleSign.setOnClickListener(this);
 		keyStringSign.setOnClickListener(this);
+        keyStringInterpolationSign.setOnClickListener(this);
 		
 		// get project folder
 		projectFolder = new File(getIntent().getExtras().getString("projectFolder"));
 		
 		// get config file
 		configFile = new File(projectFolder, "project.config");
-		
-		// get main function
+
+        // read config file
 		try {
-			mainFunction = new File(projectFolder, Files.parseConfigFile(configFile).get("mainFunction"));
-		} catch (Exception e) {
-			Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
-			finish();
-		}
-		
-		// get current function
-		try {
-            currentFunction = new File(projectFolder, Files.parseConfigFile(configFile).get("currentFunction"));
-		} catch (Exception e) {
+            HashMap<String, String> properties = Files.parseConfigFile(configFile);
+
+            // get main function
+			mainFunction = new File(projectFolder, properties.get("mainFunction"));
+
+            // get current function
+            currentFunction = new File(projectFolder, properties.get("currentFunction"));
+
+            // update or import project if needed
+            try {
+                if (!properties.containsKey("ide")) {
+                    updateProject(0);
+                } else if (!properties.get("ide").split(";")[0].equals("android")) {
+                    // TODO: import
+                } else {
+                    int version = Integer.valueOf(properties.get("ide").split(";")[1]);
+                    if (version < getPackageManager().getPackageInfo(getPackageName(), 0).versionCode) {
+                        updateProject(version);
+                    } else if (version > getPackageManager().getPackageInfo(getPackageName(), 0).versionCode) {
+                        Toast.makeText(this, R.string.toast_downgrade_warning, Toast.LENGTH_LONG).show();
+                    }
+                }
+            } catch (Exception e) { }
+
+        } catch (Exception e) {
 			Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
 			finish();
 		}
@@ -412,10 +430,20 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 			Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();;
 		}
 		
-		// save current function
+		// save config file
 		try {
 			HashMap<String, String> properties = Files.parseConfigFile(configFile);
 			properties.put("currentFunction", Files.getRelativePath(projectFolder, currentFunction.getAbsoluteFile()));
+            try {
+                if (!properties.containsKey("ide") ||
+                        Integer.valueOf(properties.get("ide").split(";")[1]) < getPackageManager().getPackageInfo(getPackageName(), 0).versionCode ||
+                        !properties.get("ide").split(";")[0].equals("android")) {
+
+                    properties.put("ide", "android;" + String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionCode));
+                }
+            } catch (Exception e) {
+                properties.put("ide", "android;0");
+            }
 			Files.createConfigFile(configFile, properties);
 		} catch (Exception e) {
 			Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
@@ -614,10 +642,89 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
         try {
             textCode.setText(Files.read(currentFunction));
         } catch (Exception e) {
-            Toast.makeText(Editor.this, e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
             finish();
         }
         onResume();
+
+    }
+
+    /** updates the project */
+    private void updateProject(int fromVersion) {
+
+        switch (fromVersion) {
+
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+
+                // convert int colors to hex values
+                try {
+                    HashMap<String, String> properties = Files.parseConfigFile(configFile);
+
+                    switch (Integer.valueOf(properties.get("colorPalette"))) {
+
+                        // Arendelle Classic
+                        case 0:
+                            properties.put("colorBackground", "#000000");
+                            properties.put("colorFirst", "#FFFFFF");
+                            properties.put("colorSecond", "#CECECE");
+                            properties.put("colorThird", "#8C8A8C");
+                            properties.put("colorFourth", "#424542");
+                            break;
+
+                        // Sparkling Blue
+                        case 1:
+                            properties.put("colorBackground", "#000000");
+                            properties.put("colorFirst", "#49CEE6");
+                            properties.put("colorSecond", "#49B3E6");
+                            properties.put("colorThird", "#499EE6");
+                            properties.put("colorFourth", "#4985E6");
+                            break;
+
+                        // Arendelle Pink
+                        case 2:
+                            properties.put("colorBackground", "#000000");
+                            properties.put("colorFirst", "#E60087");
+                            properties.put("colorSecond", "#B800AD");
+                            properties.put("colorThird", "#8E00D7");
+                            properties.put("colorFourth", "#6600FF");
+                            break;
+
+                        // Simple Red
+                        case 3:
+                            properties.put("colorBackground", "#FFFFFF");
+                            properties.put("colorFirst", "#E70D20");
+                            properties.put("colorSecond", "#EC444B");
+                            properties.put("colorThird", "#F17E81");
+                            properties.put("colorFourth", "#F7BBBE");
+                            break;
+
+                        // White Legacy
+                        case 4:
+                            properties.put("colorBackground", "#EAEAEA");
+                            properties.put("colorFirst", "#030303");
+                            properties.put("colorSecond", "#313131");
+                            properties.put("colorThird", "#6D6D6D");
+                            properties.put("colorFourth", "#B3B3B3");
+                            break;
+
+                    }
+
+                    Files.createConfigFile(configFile, properties);
+                } catch (Exception e) {
+                    Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+                    finish();
+                }
+
+                // NO BREAK!
+
+            default:
+                break;
+
+        }
 
     }
 

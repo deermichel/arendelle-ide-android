@@ -81,6 +81,17 @@ public class Kernel {
 				screen.title = Replacer.replaceInString(title, screen, spaces);
 				arendelle.i++;
 				break;
+				
+			case '"':
+				// get and set screen title
+				title = "";
+				for (int i = arendelle.i + 1; !(arendelle.code.charAt(i) == '"'); i++) {
+					title += arendelle.code.charAt(i);
+					arendelle.i = i;
+				}
+				screen.title = Replacer.replaceInString(title, screen, spaces);
+				arendelle.i++;
+				break;
 			
 				
 			//////////////////////////////////////////////////
