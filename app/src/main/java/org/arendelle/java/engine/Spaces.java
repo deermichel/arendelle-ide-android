@@ -162,12 +162,6 @@ public class Spaces {
 		
 		arendelle.i++;
 		
-		// abort if user wants to create the return space (!)
-		if (name.equals("return") && !spaces.containsKey("return")) {
-			Reporter.report("Using @return in the main function is forbidden.", arendelle.line);
-			return;
-		}
-		
 		// determine action
 		if (expression == "") {
 			

@@ -500,7 +500,12 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
         builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                newFunction(((EditText) dialogView.findViewById(R.id.dialog_new_function_text_name)).getText().toString());
+                // check input
+                if (((EditText) dialogView.findViewById(R.id.dialog_new_function_text_name)).getText().toString().equals("")) {
+                    showNewFunctionDialog();
+                } else {
+                    newFunction(((EditText) dialogView.findViewById(R.id.dialog_new_function_text_name)).getText().toString());
+                }
             }
         });
         builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
@@ -572,7 +577,12 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
         builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                renameFunction(((EditText) dialogView.findViewById(R.id.dialog_rename_text_name)).getText().toString());
+                // check input
+                if (((EditText) dialogView.findViewById(R.id.dialog_rename_text_name)).getText().toString().equals("")) {
+                    showRenameFunctionDialog();
+                } else {
+                    renameFunction(((EditText) dialogView.findViewById(R.id.dialog_rename_text_name)).getText().toString());
+                }
             }
         });
         builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {

@@ -21,12 +21,8 @@
     <string name="action_contact">Report Bug</string>
     <string name="action_about">About</string>
     <string name="toast_storage_not_accessible">Storage not accessible</string>
-    <string name="toast_enter_name_for_project">Please enter a name for the project</string>
-    <string name="toast_enter_name_for_main_function">Please enter a name for the main function which is the entry point of your project</string>
-    <string name="toast_main_function_in_folder">The main function has to be in the main folder. Please remove the dots to proceed.</string>
     <string name="dialog_new_project_title">New project</string>
     <string name="dialog_new_project_name">Name</string>
-    <string name="dialog_new_project_main_function_name">Name of main function</string>
 
     <!-- Editor activity -->
     <string name="action_run">Run</string>

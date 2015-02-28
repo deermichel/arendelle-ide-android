@@ -183,6 +183,12 @@ public class Replacer {
 				// evaluate placeholder
 				expressionWithoutPlaceholders += new Expression(Replacer.replace(placeholder, screen, spaces)).eval().toPlainString();
 				
+			} else if (i < string.length() - 1 && string.substring(i, i + 2).equals("\\\"")) {
+				expressionWithoutPlaceholders += "\"";
+				i++;
+			} else if (i < string.length() - 1 && string.substring(i, i + 2).equals("\\'")) {
+				expressionWithoutPlaceholders += "'";
+				i++;
 			} else {
 				expressionWithoutPlaceholders += string.charAt(i);
 			}

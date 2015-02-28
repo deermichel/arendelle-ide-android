@@ -20,6 +20,8 @@
 package org.arendelle.java.engine;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MasterEvaluator {
 	
@@ -113,31 +115,20 @@ public class MasterEvaluator {
 		// copy whole code without spaces
 		for (int i = 0; i < code.length(); i++) {
 			
-			// exclude strings (' type)
-			if (code.charAt(i) == '\'') {
-				do {
-					codeWithoutSpaces += code.charAt(i);
-					i++;
-					if (i > code.length() - 1) {
-						Reporter.report("Syntax error, insert ''' to complete statement.", -1);
-						break;
-					}
-				} while (!(code.charAt(i) == '\''));
+			// exclude strings
+			if (code.charAt(i) == '\'' || code.charAt(i) == '"') {
+				Pattern pattern = Pattern.compile("([\"'])(?:(?=(\\\\?))\\2.)*?\\1");
+				Matcher matcher = pattern.matcher(code.substring(i));
+				if (matcher.find()) {
+					codeWithoutSpaces += matcher.group();
+					i += matcher.group().length() - 1;
+				} else {
+					break;
+				}
+				
+			} else if (code.charAt(i) != ' ') {
+				codeWithoutSpaces += code.charAt(i);
 			}
-			
-			// exclude strings (" type)
-			if (code.charAt(i) == '\"') {
-				do {
-					codeWithoutSpaces += code.charAt(i);
-					i++;
-					if (i > code.length() - 1) {
-						Reporter.report("Syntax error, insert '\"' to complete statement.", -1);
-						break;
-					}
-				} while (!(code.charAt(i) == '\"'));
-			}
-			
-			if (code.charAt(i) != ' ') codeWithoutSpaces += code.charAt(i);
 			
 		}
 		

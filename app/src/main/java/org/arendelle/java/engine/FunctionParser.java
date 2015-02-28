@@ -94,13 +94,16 @@ public class FunctionParser {
 		
 		// read function header
 		String header = "";
-		while (functionArendelle.code.charAt(functionArendelle.i) != '<') functionArendelle.i++;
-		for (int i = functionArendelle.i + 1; functionArendelle.code.charAt(i) != '>'; i++) {
-			header += functionArendelle.code.charAt(i);
-			functionArendelle.i = i;
+		if (functionArendelle.code.startsWith("<")) {
+			
+			while (functionArendelle.code.charAt(functionArendelle.i) != '<') functionArendelle.i++;
+			for (int i = functionArendelle.i + 1; functionArendelle.code.charAt(i) != '>'; i++) {
+				header += functionArendelle.code.charAt(i);
+				functionArendelle.i = i;
+			}
+			
+			functionArendelle.i += 2;
 		}
-		
-		functionArendelle.i += 2;
 		
 		// get expected parameters
 		String[] functionExpectedParameters = header.split(",");

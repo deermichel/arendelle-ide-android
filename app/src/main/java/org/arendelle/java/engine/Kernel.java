@@ -20,6 +20,8 @@
 package org.arendelle.java.engine;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Kernel {
 
@@ -72,25 +74,14 @@ public class Kernel {
 				break;
 				
 			case '\'':
-				// get and set screen title
-				String title = "";
-				for (int i = arendelle.i + 1; !(arendelle.code.charAt(i) == '\''); i++) {
-					title += arendelle.code.charAt(i);
-					arendelle.i = i;
-				}
-				screen.title = Replacer.replaceInString(title, screen, spaces);
-				arendelle.i++;
-				break;
-				
 			case '"':
 				// get and set screen title
-				title = "";
-				for (int i = arendelle.i + 1; !(arendelle.code.charAt(i) == '"'); i++) {
-					title += arendelle.code.charAt(i);
-					arendelle.i = i;
-				}
-				screen.title = Replacer.replaceInString(title, screen, spaces);
-				arendelle.i++;
+				Pattern pattern = Pattern.compile("([\"'])(?:(?=(\\\\?))\\2.)*?\\1");
+				Matcher matcher = pattern.matcher(arendelle.code.substring(arendelle.i));
+				String title = "";
+				if (matcher.find()) title = matcher.group();
+				screen.title = Replacer.replaceInString(title.substring(1, title.length() - 1), screen, spaces);
+				arendelle.i += title.length() - 1;
 				break;
 			
 				

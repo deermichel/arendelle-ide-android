@@ -201,17 +201,9 @@ public class Main extends ActionBarActivity implements OnItemClickListener, Adap
 			public void onClick(DialogInterface dialog, int which) {
                 // check input
                 if (((EditText) dialogView.findViewById(R.id.dialog_new_project_text_name)).getText().toString().equals("")) {
-                    Toast.makeText(Main.this, R.string.toast_enter_name_for_project, Toast.LENGTH_LONG).show();
-                    showNewProjectDialog();
-                } else if (((EditText) dialogView.findViewById(R.id.dialog_new_project_text_main_function_name)).getText().toString().equals("")) {
-                    Toast.makeText(Main.this, R.string.toast_enter_name_for_main_function, Toast.LENGTH_LONG).show();
-                    showNewProjectDialog();
-                } else if (((EditText) dialogView.findViewById(R.id.dialog_new_project_text_main_function_name)).getText().toString().contains(".")) {
-                    Toast.makeText(Main.this, R.string.toast_main_function_in_folder, Toast.LENGTH_LONG).show();
                     showNewProjectDialog();
                 } else {
-                    newProject(((EditText) dialogView.findViewById(R.id.dialog_new_project_text_name)).getText().toString(),
-                            ((EditText) dialogView.findViewById(R.id.dialog_new_project_text_main_function_name)).getText().toString());
+                    newProject(((EditText) dialogView.findViewById(R.id.dialog_new_project_text_name)).getText().toString(), "main");
                 }
 			}
 		});
@@ -369,7 +361,12 @@ public class Main extends ActionBarActivity implements OnItemClickListener, Adap
         builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                renameProject(projectFolder, ((EditText) dialogView.findViewById(R.id.dialog_rename_text_name)).getText().toString());
+                // check input
+                if (((EditText) dialogView.findViewById(R.id.dialog_rename_text_name)).getText().toString().equals("")) {
+                    showRenameProjectDialog(projectFolder);
+                } else {
+                    renameProject(projectFolder, ((EditText) dialogView.findViewById(R.id.dialog_rename_text_name)).getText().toString());
+                }
             }
         });
         builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
