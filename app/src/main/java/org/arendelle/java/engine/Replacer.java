@@ -161,38 +161,24 @@ public class Replacer {
 		// copy whole code without placeholders
 		String expressionWithoutPlaceholders = "";
 		for (int i = 0; i < string.length(); i++) {
-			
-			if (string.charAt(i) == '\\' && i < string.length() - 2 && string.charAt(i + 1) == '(') {
-				
+
+			if (string.charAt(i) == '|') {
+
 				// get placeholder without spaces
 				String placeholder = "";
-				int nestedGrammars = 0;
-				for (int j = i + 2; !(string.charAt(j) == ')' && nestedGrammars == 0); j++) {
+				for (int j = i + 1; !(string.charAt(j) == '|'); j++) {
 					if (string.charAt(j) != ' ') placeholder += string.charAt(j);
 					i = j;
-					
-					if (string.charAt(j) == '[' || string.charAt(j) == '(' || string.charAt(j) == '{') {
-						nestedGrammars++;
-					} else if (string.charAt(j) == ']' || string.charAt(j) == ')' || string.charAt(j) == '}') {
-						nestedGrammars--;
-					}
-					
 				}
 				i++;
-				
+
 				// evaluate placeholder
 				expressionWithoutPlaceholders += new Expression(Replacer.replace(placeholder, screen, spaces)).eval().toPlainString();
-				
-			} else if (i < string.length() - 1 && string.substring(i, i + 2).equals("\\\"")) {
-				expressionWithoutPlaceholders += "\"";
-				i++;
-			} else if (i < string.length() - 1 && string.substring(i, i + 2).equals("\\'")) {
-				expressionWithoutPlaceholders += "'";
-				i++;
+
 			} else {
 				expressionWithoutPlaceholders += string.charAt(i);
 			}
-			
+
 		}
 		
 		return expressionWithoutPlaceholders;
