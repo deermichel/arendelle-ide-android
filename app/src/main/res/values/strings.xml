@@ -60,7 +60,7 @@
     <string name="key_function_header_close">&gt;</string>
     <string name="key_title_sign">\'</string>
     <string name="key_string_sign">\"</string>
-    <string name="key_string_interpolation_sign">\\</string>
+    <string name="key_string_interpolation_sign">|</string>
 
     <!-- Screen activity -->
     <string name="action_stop">Stop</string>
