@@ -12,12 +12,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -155,9 +162,22 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 		drawerLayout.setDrawerListener(actionBarLeftDrawerToggle);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		// setup font type of code area
+		// setup code area
 		textCode.setTypeface(Typeface.MONOSPACE);
-		
+		textCode.setTextColor(Color.GRAY);
+		textCode.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+			@Override
+			public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+			@Override
+			public void afterTextChanged(Editable editable) {
+				highlightCode();
+			}
+
+		});
+
 		// setup drawer list
 		leftDrawerListView.setOnItemClickListener(this);
         leftDrawerListView.setOnItemLongClickListener(this);
@@ -498,16 +518,16 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
         final View dialogView = inflater.inflate(R.layout.dialog_new_function, null);
         builder.setView(dialogView);
         builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // check input
-                if (((EditText) dialogView.findViewById(R.id.dialog_new_function_text_name)).getText().toString().equals("")) {
-                    showNewFunctionDialog();
-                } else {
-                    newFunction(((EditText) dialogView.findViewById(R.id.dialog_new_function_text_name)).getText().toString());
-                }
-            }
-        });
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// check input
+				if (((EditText) dialogView.findViewById(R.id.dialog_new_function_text_name)).getText().toString().equals("")) {
+					showNewFunctionDialog();
+				} else {
+					newFunction(((EditText) dialogView.findViewById(R.id.dialog_new_function_text_name)).getText().toString());
+				}
+			}
+		});
         builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {}
@@ -586,9 +606,10 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
             }
         });
         builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {}
-        });
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
 
         AlertDialog dialog = builder.create();
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
@@ -737,5 +758,48 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
         }
 
     }
+
+	/** applies code highlighting */
+	private void highlightCode() {
+
+		String temp = textCode.getText().toString();
+		Editable editable = textCode.getEditableText();
+		for (int i = 0; i < temp.length(); i++) {
+
+			switch (temp.charAt(i)) {
+
+				case '(':
+				case '[':
+				case '{':
+				case '<':
+				case ',':
+				case ')':
+				case ']':
+				case '}':
+				case '>':
+					editable.setSpan(new ForegroundColorSpan(Color.WHITE), i, i + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+					break;
+
+				case '0':
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+				case '8':
+				case '9':
+					editable.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark)), i, i + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+					break;
+
+				default:
+					break;
+
+			}
+
+		}
+
+	}
 
 }
