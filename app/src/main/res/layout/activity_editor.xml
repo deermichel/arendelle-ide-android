@@ -15,7 +15,7 @@
         <include layout="@layout/toolbar"
             android:id="@+id/editor_toolbar" />
 
-        <EditText
+        <org.arendelle.android.CustomEditText
             android:id="@+id/text_code"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
