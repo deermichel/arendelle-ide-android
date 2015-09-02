@@ -35,23 +35,28 @@ public class CodeHighlighter {
 
     /** applies code highlighting */
     public void highlight(Context context, EditText editText) {
+        highlight(context, editText, 0);
+    }
+
+    /** applies code highlighting with offset */
+    public void highlight(Context context, EditText editText, int offset) {
 
         String text = editText.getText().toString();
         Editable editable = editText.getEditableText();
-        highlightSingle(editable, text, numbers, context.getResources().getColor(R.color.colorNumbers));
-        highlightSingle(editable, text, dataTypes, context.getResources().getColor(R.color.colorDataTypes));
-        highlightSingle(editable, text, functions, context.getResources().getColor(R.color.colorFunctions));
-        highlightSingle(editable, text, brackets, context.getResources().getColor(R.color.colorBrackets));
-        highlightSingle(editable, text, oneLineCcomments, context.getResources().getColor(R.color.colorComments));
-        //highlightSingle(editable, text, multiLineCcomments, context.getResources().getColor(R.color.colorComments));
+        highlightSingle(editable, text, numbers, context.getResources().getColor(R.color.colorNumbers), offset);
+        highlightSingle(editable, text, dataTypes, context.getResources().getColor(R.color.colorDataTypes), offset);
+        highlightSingle(editable, text, functions, context.getResources().getColor(R.color.colorFunctions), offset);
+        highlightSingle(editable, text, brackets, context.getResources().getColor(R.color.colorBrackets), offset);
+        highlightSingle(editable, text, oneLineCcomments, context.getResources().getColor(R.color.colorComments), offset);
+        //highlightSingle(editable, text, multiLineCcomments, context.getResources().getColor(R.color.colorComments), offset);
 
     }
 
-    private void highlightSingle(Editable editable, String text, Pattern pattern, int color) {
+    private void highlightSingle(Editable editable, String text, Pattern pattern, int color, int offset) {
 
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = pattern.matcher(text.substring(offset));
         while (matcher.find()) {
-            editable.setSpan(new ForegroundColorSpan(color), matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            editable.setSpan(new ForegroundColorSpan(color), offset + matcher.start(), offset + matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
     }

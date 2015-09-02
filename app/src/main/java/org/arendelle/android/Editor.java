@@ -21,6 +21,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Layout;
+import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextWatcher;
@@ -174,7 +176,11 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 
 			@Override
 			public void afterTextChanged(Editable editable) {
-				codeHighlighter.highlight(Editor.this, textCode);
+
+				int selectionStart = Selection.getSelectionStart(textCode.getText());
+				System.out.println(selectionStart);
+
+				codeHighlighter.highlight(Editor.this, textCode, selectionStart);
 			}
 
 		});
