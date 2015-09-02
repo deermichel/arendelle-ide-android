@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
@@ -16,10 +17,12 @@ public class CustomEditText extends EditText {
 
 
     public CustomEditText(Context context, AttributeSet attrs) {
-
         super(context, attrs);
+
+        // setup line numbers
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.WHITE);
+        paint.setColor(context.getResources().getColor(R.color.lineNumbers));
+        paint.setTypeface(Typeface.createFromAsset(context.getAssets(), "Inconsolata-Bold.ttf"));
         paint.setTextSize(this.getTextSize());
 
     }

@@ -163,8 +163,9 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		// setup code area
-		textCode.setTypeface(Typeface.MONOSPACE);
-		textCode.setTextColor(Color.GRAY);
+		textCode.setTypeface(Typeface.createFromAsset(getAssets(), "Inconsolata-Bold.ttf"));
+		textCode.setTextColor(getResources().getColor(R.color.colorText));
+		final CodeHighlighter codeHighlighter = new CodeHighlighter();
 		textCode.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
@@ -173,7 +174,7 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 
 			@Override
 			public void afterTextChanged(Editable editable) {
-				highlightCode();
+				codeHighlighter.highlight(Editor.this, textCode);
 			}
 
 		});
@@ -529,9 +530,10 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 			}
 		});
         builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {}
-        });
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
 
         AlertDialog dialog = builder.create();
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
@@ -595,16 +597,16 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
         final View dialogView = inflater.inflate(R.layout.dialog_rename, null);
         builder.setView(dialogView);
         builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // check input
-                if (((EditText) dialogView.findViewById(R.id.dialog_rename_text_name)).getText().toString().equals("")) {
-                    showRenameFunctionDialog();
-                } else {
-                    renameFunction(((EditText) dialogView.findViewById(R.id.dialog_rename_text_name)).getText().toString());
-                }
-            }
-        });
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// check input
+				if (((EditText) dialogView.findViewById(R.id.dialog_rename_text_name)).getText().toString().equals("")) {
+					showRenameFunctionDialog();
+				} else {
+					renameFunction(((EditText) dialogView.findViewById(R.id.dialog_rename_text_name)).getText().toString());
+				}
+			}
+		});
         builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -758,48 +760,5 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
         }
 
     }
-
-	/** applies code highlighting */
-	private void highlightCode() {
-
-		String temp = textCode.getText().toString();
-		Editable editable = textCode.getEditableText();
-		for (int i = 0; i < temp.length(); i++) {
-
-			switch (temp.charAt(i)) {
-
-				case '(':
-				case '[':
-				case '{':
-				case '<':
-				case ',':
-				case ')':
-				case ']':
-				case '}':
-				case '>':
-					editable.setSpan(new ForegroundColorSpan(Color.WHITE), i, i + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-					break;
-
-				case '0':
-				case '1':
-				case '2':
-				case '3':
-				case '4':
-				case '5':
-				case '6':
-				case '7':
-				case '8':
-				case '9':
-					editable.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark)), i, i + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-					break;
-
-				default:
-					break;
-
-			}
-
-		}
-
-	}
 
 }
