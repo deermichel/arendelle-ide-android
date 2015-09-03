@@ -23,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Layout;
 import android.text.Selection;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextWatcher;
@@ -177,10 +178,11 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 			@Override
 			public void afterTextChanged(Editable editable) {
 
-				int selectionStart = Selection.getSelectionStart(textCode.getText());
-				System.out.println(selectionStart);
+				// cleanup: remove spans
+				ForegroundColorSpan spans[] = editable.getSpans(0, textCode.getText().length(), ForegroundColorSpan.class);
+				for (ForegroundColorSpan span : spans) editable.removeSpan(span);
 
-				codeHighlighter.highlight(Editor.this, textCode, selectionStart);
+				codeHighlighter.highlight(Editor.this, textCode);
 			}
 
 		});
