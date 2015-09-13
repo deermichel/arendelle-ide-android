@@ -41,10 +41,11 @@ import org.arendelle.java.engine.CodeScreen;
 import org.arendelle.java.engine.MasterEvaluator;
 import org.arendelle.java.engine.Reporter;
 
-public class Main extends ActionBarActivity implements OnItemClickListener, AdapterView.OnItemLongClickListener {
+public class Main extends ActionBarActivity implements OnItemClickListener, AdapterView.OnItemLongClickListener, View.OnClickListener {
 	
 	// gui objects
 	private ListView listProjects;
+    private FloatingActionButton fabuttonAdd;
 
     // app settings
     private SharedPreferences prefs;
@@ -64,6 +65,10 @@ public class Main extends ActionBarActivity implements OnItemClickListener, Adap
 		
 		// get gui objects
 		listProjects = (ListView) findViewById(R.id.list_projects);
+        fabuttonAdd = (FloatingActionButton) findViewById(R.id.fabutton_add);
+
+        // setup floating action button
+        fabuttonAdd.setOnClickListener(this);
 		
 		// setup projects list
 		listProjects.setOnItemClickListener(this);
@@ -128,11 +133,6 @@ public class Main extends ActionBarActivity implements OnItemClickListener, Adap
         Intent intent;
 		switch (item.getItemId()) {
 
-            // new project
-            case R.id.action_new:
-                showNewProjectDialog();
-                return true;
-
             // show welcome screen
             case R.id.action_basics:
                 intent = new Intent(this, Webview.class);
@@ -188,7 +188,7 @@ public class Main extends ActionBarActivity implements OnItemClickListener, Adap
 		}
 		
 	}
-	
+
 	/** shows dialog for new Arendelle project */
 	private void showNewProjectDialog() {
 
@@ -468,6 +468,14 @@ public class Main extends ActionBarActivity implements OnItemClickListener, Adap
             }
 
         }
+
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        // floating action button
+        if (view == fabuttonAdd) showNewProjectDialog();
 
     }
 

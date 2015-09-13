@@ -59,7 +59,6 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 	
 	// gui objects
 	private EditText textCode;
-    private FloatingActionButton fabuttonRun;
 	private Button keyLoopOpen,
 		keyGrammarDivider, 
 		keyLoopClose, 
@@ -113,7 +112,6 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		leftDrawerListView = (ListView) findViewById(R.id.left_drawer);
 		textCode = (EditText) findViewById(R.id.text_code);
-        fabuttonRun = (FloatingActionButton) findViewById(R.id.fabutton_run);
 
 		keyLoopOpen = (Button) findViewById(R.id.key_loop_open);
 		keyGrammarDivider = (Button) findViewById(R.id.key_grammar_divider);
@@ -171,9 +169,12 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 		final CodeHighlighter codeHighlighter = new CodeHighlighter();
 		textCode.addTextChangedListener(new TextWatcher() {
 			@Override
-			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+			}
+
 			@Override
-			public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+			public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+			}
 
 			@Override
 			public void afterTextChanged(Editable editable) {
@@ -190,9 +191,6 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 		// setup drawer list
 		leftDrawerListView.setOnItemClickListener(this);
         leftDrawerListView.setOnItemLongClickListener(this);
-
-        // setup floating action button
-        fabuttonRun.setOnClickListener(this);
 		
 		// setup keys
 		keyLoopOpen.setOnClickListener(this);
@@ -297,6 +295,31 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 		if (actionBarLeftDrawerToggle.onOptionsItemSelected(item)) return true;
 
 		switch (item.getItemId()) {
+
+			// evaluate
+			case R.id.action_run:
+
+				try {
+
+					// close keyboard
+					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(textCode.getWindowToken(), 0);
+
+					// save code
+					Files.write(currentFunction, textCode.getText().toString());
+
+					// execute code
+					Intent intent = new Intent(this, Screen.class);
+					intent.putExtra("code", Files.read(mainFunction));
+					intent.putExtra("projectFolder", projectFolder.getAbsolutePath());
+					startActivity(intent);
+
+					drawerLayout.closeDrawer(leftDrawerListView);
+				} catch (Exception e) {
+					Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+				}
+
+				return true;
 			
 		default:
 			return super.onOptionsItemSelected(item);
@@ -384,40 +407,15 @@ public class Editor extends ActionBarActivity implements OnItemClickListener, On
 
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		//getMenuInflater().inflate(R.menu.menu_editor, menu);
+		getMenuInflater().inflate(R.menu.menu_editor, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public void onClick(View v) {
 
-        // evaluate
-        if (v == fabuttonRun) {
-
-            try {
-
-                // close keyboard
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(textCode.getWindowToken(), 0);
-
-                // save code
-                Files.write(currentFunction, textCode.getText().toString());
-
-                // execute code
-                Intent intent = new Intent(this, Screen.class);
-                intent.putExtra("code", Files.read(mainFunction));
-                intent.putExtra("projectFolder", projectFolder.getAbsolutePath());
-                startActivity(intent);
-
-                drawerLayout.closeDrawer(leftDrawerListView);
-            } catch (Exception e) {
-                Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
-            }
-
-        }
-
         // add function
-        else if(v == leftDrawerButtonAdd) {
+        if(v == leftDrawerButtonAdd) {
             showNewFunctionDialog();
         }
 
