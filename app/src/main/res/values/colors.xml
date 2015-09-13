@@ -12,7 +12,6 @@
     <color name="colorNumbers">#7B00FD</color>
     <color name="colorBrackets">#FFFFFF</color>
     <color name="colorDataTypes">#3AAA18</color>
-    <color name="colorFunctions">#3AAA18</color>
     <color name="colorComments">#4A4A4A</color>
 
 </resources>
